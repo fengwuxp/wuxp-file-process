@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "oaknt.api.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用oaknt api的风格",
+      "defaultValue": true
+    }
+  ]
+}
+
