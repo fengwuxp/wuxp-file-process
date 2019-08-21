@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.config;
+package com.wuxp.fileprocess.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

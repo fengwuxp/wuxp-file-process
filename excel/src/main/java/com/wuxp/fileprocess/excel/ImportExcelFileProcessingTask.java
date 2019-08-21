@@ -1,7 +1,7 @@
-package com.wuxp.fileprocess.example.excel;
+package com.wuxp.fileprocess.excel;
 
 
-import com.wuxp.fileprocess.example.excel.model.ExcelRowDataHandleResult;
+import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 
 import java.io.OutputStream;
 import java.util.List;

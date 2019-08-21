@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.excel.model;
+package com.wuxp.fileprocess.excel.model;
 
 import lombok.Data;
 import org.springframework.format.Formatter;

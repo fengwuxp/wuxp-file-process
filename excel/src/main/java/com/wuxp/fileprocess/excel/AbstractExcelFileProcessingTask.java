@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.excel;
+package com.wuxp.fileprocess.excel;
 
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import lombok.extern.slf4j.Slf4j;

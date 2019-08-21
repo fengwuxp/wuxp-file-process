@@ -1,6 +1,6 @@
-package com.wuxp.fileprocess.example.excel.export;
+package com.wuxp.fileprocess.excel.export;
 
-import com.wuxp.fileprocess.example.excel.ExportExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.format.datetime.DateFormatter;

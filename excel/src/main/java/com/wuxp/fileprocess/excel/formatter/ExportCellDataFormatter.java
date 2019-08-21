@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.excel.formatter;
+package com.wuxp.fileprocess.excel.formatter;
 
 
 import org.springframework.format.Formatter;

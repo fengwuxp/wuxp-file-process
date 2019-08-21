@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.excel.utils;
+package com.wuxp.fileprocess.excel.utils;
 
 import org.springframework.util.StringUtils;
 

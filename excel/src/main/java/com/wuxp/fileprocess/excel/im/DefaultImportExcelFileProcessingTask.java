@@ -1,4 +1,4 @@
-package com.wuxp.fileprocess.example.excel.im;
+package com.wuxp.fileprocess.excel.im;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
@@ -6,9 +6,9 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
-import com.wuxp.fileprocess.example.excel.ImportExcelFileProcessingTask;
-import com.wuxp.fileprocess.example.excel.AbstractExcelFileProcessingTask;
-import com.wuxp.fileprocess.example.excel.model.ExcelRowDataHandleResult;
+import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
