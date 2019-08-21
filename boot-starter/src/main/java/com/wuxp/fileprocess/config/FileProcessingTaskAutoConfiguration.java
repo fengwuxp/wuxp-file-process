@@ -1,6 +1,8 @@
 package com.wuxp.fileprocess.config;
 
 
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
+import com.wuxp.fileprocess.core.SimpleFileProcessingTaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,5 +36,12 @@ public class FileProcessingTaskAutoConfiguration {
         pool.setKeepAliveSeconds(taskPoolProperties.getKeepAliveSeconds());
         pool.setQueueCapacity(taskPoolProperties.getQueueCapacity());
         return pool;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(FileProcessingTaskManager.class)
+    public FileProcessingTaskManager fileProcessingTaskManager() {
+
+        return new SimpleFileProcessingTaskManager();
     }
 }

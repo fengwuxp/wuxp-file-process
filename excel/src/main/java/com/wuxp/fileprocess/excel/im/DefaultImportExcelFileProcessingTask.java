@@ -27,7 +27,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     /**
      * 处理的文件
      */
-    protected File file;
+    protected InputStream inputStream;
 
     /**
      * sheets
@@ -51,7 +51,6 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
 
     /**
-     *
      * @param file
      * @param importExcelRowDateConverter
      * @param importExcelRowDataHandler
@@ -60,11 +59,24 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler) {
         super(file.getName());
-        this.file = file;
+        try {
+            this.inputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         this.importExcelRowDateConverter = importExcelRowDateConverter;
         this.importExcelRowDataHandler = importExcelRowDataHandler;
     }
 
+    public DefaultImportExcelFileProcessingTask(String name,
+                                                InputStream inputStream,
+                                                ImportExcelRowDateConverter importExcelRowDateConverter,
+                                                ImportExcelRowDataHandler importExcelRowDataHandler) {
+        super(name);
+        this.inputStream = inputStream;
+        this.importExcelRowDateConverter = importExcelRowDateConverter;
+        this.importExcelRowDataHandler = importExcelRowDataHandler;
+    }
 
     @Override
     public <T> List<T> getFailureList() {
@@ -80,7 +92,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     @Override
     protected void process() throws Exception {
         log.info("开始导入任务的处理");
-        ExcelReader excelReader = EasyExcelFactory.getReader(new FileInputStream(this.file), new AnalysisEventListener<List<String>>() {
+        ExcelReader excelReader = EasyExcelFactory.getReader(this.inputStream, new AnalysisEventListener<List<String>>() {
             @Override
             public void invoke(List<String> row, AnalysisContext analysisContext) {
                 Sheet currentSheet = analysisContext.getCurrentSheet();

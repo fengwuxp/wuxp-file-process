@@ -106,12 +106,20 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
         this.processStatus = ProcessStatus.PROCESSING;
         try {
             this.process();
-            this.processStatus = ProcessStatus.SUCCESS;
+            if (this.failureTotal == 0) {
+                this.processStatus = ProcessStatus.SUCCESS;
+            } else if (this.successTotal == 0) {
+                this.processStatus = ProcessStatus.ERROR;
+            } else {
+                this.processStatus = ProcessStatus.PART_SUCCESS;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             log.error("处理excel异常", e);
             this.processStatus = ProcessStatus.ERROR;
         }
+
 
         this.processEndTime = new Date();
     }

@@ -1,14 +1,22 @@
 package test.com.wuxp.fileprocess.excel.im;
 
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
+import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import com.wuxp.fileprocess.excel.formatter.ExportCellDataFormatter;
 import com.wuxp.fileprocess.excel.im.DefaultImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.im.DefaultImportExcelRowDateConverter;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.format.Formatter;
+import org.springframework.test.context.junit4.SpringRunner;
+import test.com.wuxp.fileprocess.excel.TestFileProcessingApplication;
 
 import java.io.File;
 import java.text.ParseException;
@@ -22,7 +30,12 @@ import java.util.Locale;
  * @since <pre>8月 21, 2019</pre>
  */
 @Slf4j
+//@SpringBootTest(classes = {TestFileProcessingApplication.class})
+//@RunWith(SpringRunner.class)
 public class DefaultImportExcelFileProcessorTest {
+
+//    @Autowired
+//    private FileProcessingTaskManager fileProcessingTaskManager;
 
     @Before
     public void before() throws Exception {
@@ -88,6 +101,14 @@ public class DefaultImportExcelFileProcessorTest {
 
         defaultImportExcelFileProcessor.run();
 
+//        String join = fileProcessingTaskManager.join(defaultImportExcelFileProcessor);
+//        log.info("id = {}", join);
+//
+//        Thread.sleep(1 * 1000L);
+//
+//        Assert.assertNotNull(defaultImportExcelFileProcessor.getProcessEndTime());
+//
+//        Assert.assertTrue(ProcessStatus.ERROR.equals(defaultImportExcelFileProcessor.getProcessStatus()));
     }
 
     /**
