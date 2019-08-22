@@ -19,7 +19,7 @@ public class SimpleFormatterManager implements FormatterManager {
     /**
      * 默认内置的DateFormatter
      */
-    public static final DateFormatter DATE_FORMATTER = new DateFormatter("yyyy年MM月dd日HH时mm分s秒");
+    public static final DateFormatter DATE_FORMATTER = new DateFormatter("yyyy年MM月dd日HH时mm分ss秒");
 
     {
         this.classFormatterMap.put(Date.class, DATE_FORMATTER);

@@ -32,7 +32,7 @@ public interface FormatterManager {
     FormatterManager setFormatter(String index, Formatter formatter);
 
     /**
-     * 设置 类型
+     * 设置formatter
      *
      * @param clazz
      * @param formatter

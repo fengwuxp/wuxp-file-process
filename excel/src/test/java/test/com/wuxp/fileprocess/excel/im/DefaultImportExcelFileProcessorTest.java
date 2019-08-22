@@ -102,7 +102,7 @@ public class DefaultImportExcelFileProcessorTest {
                 dtoDefaultImportExcelRowDateConverter,
                 data -> {
                     log.info("{}", data);
-                    return new ExcelRowDataHandleResult(true, null);
+                    return new ExcelRowDataHandleResult(false, "11223");
                 });
 
         defaultImportExcelFileProcessor.run();

@@ -21,7 +21,7 @@ public interface ExportExcelDataGrabber<T> {
 
     /**
      * 获取导出的总条数
-     * 默认可以返回总条数，直到查询到美术家为止
+     * 默认可以返回总条数，直到查询到没有数据为止
      *
      * @return
      */

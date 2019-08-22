@@ -68,4 +68,14 @@ public class ExcelProcessStatusDTO {
      */
     protected int currentSheetTotal = 0;
 
+
+    /**
+     * 任务是否结束
+     *
+     * @return
+     */
+    public boolean getEnd() {
+        return this.processEndTime != null;
+    }
+
 }

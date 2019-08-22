@@ -122,6 +122,7 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
     @Override
     protected void process() throws Exception {
         int fetchSize = this.fetchSize;
+
         //抓取数据
         int totalNumber = (int) exportExcelDataGrabber.getTotalNumber();
         this.processTotal = totalNumber;
