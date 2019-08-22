@@ -27,7 +27,6 @@ public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManage
 
     private Class<T> tClass;
 
-
     public DefaultImportExcelRowDateConverter(Class<T> tClass) {
         this.tClass = tClass;
     }
@@ -48,10 +47,7 @@ public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManage
                 throw new RuntimeException("未获取到file name,在第" + index + "列数据中");
             }
             String cellData = row.get(index);
-            Formatter formatter = formatterMap.get(filedName);
-            if (formatter == null && index < formatters.size()) {
-                formatter = formatters.get(index);
-            }
+            Formatter formatter = getFormatter(val.getClass(), filedName, index);
             if (formatter == null) {
                 resultData.put(filedName, cellData);
                 return;

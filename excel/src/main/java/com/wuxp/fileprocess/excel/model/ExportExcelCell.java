@@ -1,6 +1,8 @@
 package com.wuxp.fileprocess.excel.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.Formatter;
 
 import java.util.ArrayList;
@@ -12,11 +14,15 @@ import java.util.Map;
  * 导出 excel 每一个cell的描述
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExportExcelCell {
 
 
     /**
      * 取值表达式
+     * 默认使用spel 表达式
+     * {@link org.springframework.expression.spel.standard.SpelExpressionParser}
      */
     private String value;
 
@@ -40,7 +46,7 @@ public class ExportExcelCell {
     /**
      * 转换器
      */
-    private List<Formatter> formatter = new ArrayList<Formatter>();
+    private Formatter formatter;
 
     /**
      * 列宽

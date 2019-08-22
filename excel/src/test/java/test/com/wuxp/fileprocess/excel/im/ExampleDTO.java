@@ -23,7 +23,7 @@ public class ExampleDTO {
 
     private String desc;
 
-    static enum Sex {
+    public static enum Sex {
         WOMAN,
 
         MAN,

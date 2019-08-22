@@ -6,8 +6,8 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
-import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -80,7 +81,10 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
     @Override
     public <T> List<T> getFailureList() {
-        return null;
+        return this.failureRows.stream()
+                .map(strings -> (T) this.importExcelRowDateConverter.convert(Arrays.asList(strings)))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -144,20 +148,25 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     @Override
     public void exportFailureFile(OutputStream outputStream) {
 
-        ExcelWriter writer = EasyExcelFactory.getWriter(outputStream);
+        final ExcelWriter writer = EasyExcelFactory.getWriter(outputStream);
 
         this.sheets.forEach(sheet -> {
-            Sheet failureSheet = new Sheet(1, 1);
+//            Sheet failureSheet = new Sheet(1, 1);
             List<List<String>> head = sheet.getHead();
             head.get(0).add("失败原因");
-            failureSheet.setHead(head);
-
-            writer.write0(this.failureRows.stream().map(Arrays::asList).collect(Collectors.toList()), failureSheet);
+            sheet.setHead(head);
+            writer.write0(this.failureRows.stream().map(Arrays::asList).collect(Collectors.toList()), sheet);
         });
-
+        writer.finish();
 
     }
 
+    /**
+     * 添加错误的行记录
+     *
+     * @param row
+     * @param cause
+     */
     private void addFailureRow(List<String> row, String cause) {
         List<String> arrayList = new ArrayList<>(row);
         arrayList.add(cause);

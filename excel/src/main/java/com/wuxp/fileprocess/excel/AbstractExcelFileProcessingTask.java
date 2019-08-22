@@ -2,8 +2,11 @@ package com.wuxp.fileprocess.excel;
 
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,6 +36,11 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
     protected int currentSheetIndex = -1;
 
     protected int currentSheetTotal = -1;
+
+    /**
+     * 每列的样式设置
+     */
+    protected Map<Integer, CellStyle> cellStyleMap = new HashMap<Integer, CellStyle>();
 
     public AbstractExcelFileProcessingTask(String name) {
         this.name = name;
@@ -92,6 +100,18 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
     @Override
     public int getCurrentSheetTotal() {
         return this.currentSheetTotal;
+    }
+
+
+    @Override
+    public ExcelFileProcessingTask put(int index, CellStyle cellStyle) {
+        this.cellStyleMap.put(index, cellStyle);
+        return this;
+    }
+
+    @Override
+    public void setCellStyles(Map<Integer, CellStyle> cellStyles) {
+        this.cellStyleMap = cellStyles;
     }
 
     @Override

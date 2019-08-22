@@ -20,6 +20,7 @@ import test.com.wuxp.fileprocess.excel.TestFileProcessingApplication;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -88,8 +89,13 @@ public class DefaultImportExcelFileProcessorTest {
             }
         });
 
-        dtoDefaultImportExcelRowDateConverter.setFormatter("desc",
-                (ExportCellDataFormatter<String, String>) (cellValue, rowData) -> String.format("%s%s", rowData.get(7), rowData.get(8)));
+
+        dtoDefaultImportExcelRowDateConverter.setFormatter("desc", new ExportCellDataFormatter<String,List<String>>() {
+            @Override
+            public String parse(String cellValue, List<String> rowData) throws ParseException {
+                return String.format("%s%s", rowData.get(7), rowData.get(8));
+            }
+        });
 
         DefaultImportExcelFileProcessingTask defaultImportExcelFileProcessor = new DefaultImportExcelFileProcessingTask(
                 new File(getClass().getResource("/import_example.xlsx").getFile()),

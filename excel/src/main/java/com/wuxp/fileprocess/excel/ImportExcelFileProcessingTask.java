@@ -35,8 +35,10 @@ public interface ImportExcelFileProcessingTask extends ExcelFileProcessingTask {
      */
     void exportFailureFile(OutputStream outputStream);
 
+
+
     /**
-     * 导入数据的 cell转换
+     * 导入数据的 row 数据转换
      *
      * @param <T>
      */

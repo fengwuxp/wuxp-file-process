@@ -4,7 +4,6 @@ package com.wuxp.fileprocess.excel.formatter;
 import org.springframework.format.Formatter;
 
 import java.text.ParseException;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -28,6 +27,10 @@ public interface ExportCellDataFormatter<T, E> extends Formatter<T> {
         return null;
     }
 
+    default String print(T object, E rowData) {
+        return null;
+    }
+
     /**
      * 处理每一列的值
      *
@@ -36,5 +39,9 @@ public interface ExportCellDataFormatter<T, E> extends Formatter<T> {
      * @return T
      * @throws ParseException
      */
-    T parse(String cellValue, List<E> rowData) throws ParseException;
+    default T parse(String cellValue, E rowData) throws ParseException {
+        return null;
+    }
+
+    ;
 }

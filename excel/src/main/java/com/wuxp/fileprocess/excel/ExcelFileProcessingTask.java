@@ -2,6 +2,9 @@ package com.wuxp.fileprocess.excel;
 
 
 import com.wuxp.fileprocess.core.FileProcessingTask;
+import org.apache.poi.ss.usermodel.CellStyle;
+
+import java.util.Map;
 
 /**
  * excel file processing task
@@ -39,6 +42,7 @@ public interface ExcelFileProcessingTask extends FileProcessingTask {
 
     /**
      * 获取当前 current index
+     *
      * @return
      */
     int getCurrentSheetIndex();
@@ -51,4 +55,19 @@ public interface ExcelFileProcessingTask extends FileProcessingTask {
     int getCurrentSheetTotal();
 
 
+    /**
+     * 设置单列的样式
+     *
+     * @param index
+     * @param cellStyle
+     * @return
+     */
+    ExcelFileProcessingTask put(int index, CellStyle cellStyle);
+
+    /**
+     * 设置所有列的样式
+     *
+     * @param cellStyles
+     */
+    void setCellStyles(Map<Integer, CellStyle> cellStyles);
 }

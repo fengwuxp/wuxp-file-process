@@ -3,7 +3,9 @@ package com.wuxp.fileprocess.example.controller;
 
 import com.wuxp.fileprocess.core.FileProcessingTask;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
+import com.wuxp.fileprocess.example.ProcessTaskStatusProvider;
 import com.wuxp.fileprocess.excel.ExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExcelProcessStatusDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,7 @@ import java.text.MessageFormat;
 @Controller
 @RequestMapping("task_status")
 @Slf4j
-public class ProcessTaskStatusController {
+public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
 
     @Autowired
     private FileProcessingTaskManager fileProcessingTaskManager;
@@ -38,25 +40,25 @@ public class ProcessTaskStatusController {
     @ResponseBody
     public ExcelProcessStatusDTO getProcessStatus(String taskId) {
 
-        ExcelProcessStatusDTO dto = new ExcelProcessStatusDTO();
+        return this.getProcessStatus(taskId);
+    }
 
-        FileProcessingTask fileProcessingTask = fileProcessingTaskManager.get(taskId);
-        if (fileProcessingTask == null) {
-            return null;
-        }
-
-//        dto.setCurrentSheetIndex(fileProcessingTask.getCurrentSheetIndex())
-//                .setName(fileProcessingTask.getName())
-//                .setCurrentSheetTotal(fileProcessingTask.getCurrentSheetTotal());
-
-        BeanUtils.copyProperties(fileProcessingTask, dto);
-
-        return dto;
+    /**
+     * 导出文件
+     *
+     * @param taskId
+     * @param fileName
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("export_file")
+    public void exportFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
+        this.exportFile(taskId, fileName, response);
     }
 
 
     /**
-     * 导出失败文件
+     * 导出导入任务的失败结果文件
      *
      * @param taskId
      * @param response
@@ -64,17 +66,6 @@ public class ProcessTaskStatusController {
      */
     @RequestMapping("export_failure")
     public void exportImportFailureFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
-        ImportExcelFileProcessingTask fileProcessingTask = (ImportExcelFileProcessingTask) fileProcessingTaskManager.remove(taskId);
-        if (fileProcessingTask == null) {
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().println("文件不存在或已被下载!");
-            return;
-        }
-        response.setContentType("application/msexcel");
-        response.setContentType("application/octet-stream;charset=utf-8");
-        response.setHeader("Content-Disposition", MessageFormat.format("attachment; filename={0}", new String(fileName.getBytes(StandardCharsets.UTF_8))));
-        fileProcessingTask.exportFailureFile(response.getOutputStream());
-
-
+        this.exportImportFailureFile(taskId, fileName, response);
     }
 }
