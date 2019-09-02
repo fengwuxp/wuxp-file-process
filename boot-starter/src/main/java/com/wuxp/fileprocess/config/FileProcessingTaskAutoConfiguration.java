@@ -21,22 +21,22 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class FileProcessingTaskAutoConfiguration {
 
 
-    @Autowired
-    private FileProcessingTaskProperties fileProcessingTaskProperties;
+//    @Autowired
+//    private FileProcessingTaskProperties fileProcessingTaskProperties;
 
 
-    @Bean
-    @ConditionalOnMissingBean(ThreadPoolTaskExecutor.class)
-    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
-        TaskPoolProperties taskPoolProperties = fileProcessingTaskProperties.getTaskPoolProperties();
-        pool.setCorePoolSize(taskPoolProperties.getCorePoolSize());
-        pool.setMaxPoolSize(taskPoolProperties.getMaxPoolSize());
-        pool.setWaitForTasksToCompleteOnShutdown(true);
-        pool.setKeepAliveSeconds(taskPoolProperties.getKeepAliveSeconds());
-        pool.setQueueCapacity(taskPoolProperties.getQueueCapacity());
-        return pool;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(ThreadPoolTaskExecutor.class)
+//    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+//        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+//        TaskPoolProperties taskPoolProperties = fileProcessingTaskProperties.getTaskPoolProperties();
+//        pool.setCorePoolSize(taskPoolProperties.getCorePoolSize());
+//        pool.setMaxPoolSize(taskPoolProperties.getMaxPoolSize());
+//        pool.setWaitForTasksToCompleteOnShutdown(true);
+//        pool.setKeepAliveSeconds(taskPoolProperties.getKeepAliveSeconds());
+//        pool.setQueueCapacity(taskPoolProperties.getQueueCapacity());
+//        return pool;
+//    }
 
     @Bean
     @ConditionalOnMissingBean(FileProcessingTaskManager.class)

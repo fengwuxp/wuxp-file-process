@@ -17,9 +17,5 @@ public class FileProcessingTaskProperties {
     private Boolean enabled = true;
 
 
-    /**
-     * 任务处理线程池相关配置
-     */
-    private TaskPoolProperties taskPoolProperties = new TaskPoolProperties();
 
 }

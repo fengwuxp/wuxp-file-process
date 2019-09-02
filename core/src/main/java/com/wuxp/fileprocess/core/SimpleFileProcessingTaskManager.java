@@ -3,6 +3,7 @@ package com.wuxp.fileprocess.core;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.util.Map;
@@ -15,8 +16,8 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
 
     private final static Map<String, FileProcessingTask> FILE_PROCESSING_TASK_MAP = new ConcurrentReferenceHashMap<>();
 
-    @Autowired(required = false)
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Autowired()
+    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
     @Override
     public String join(FileProcessingTask processingTask) {
@@ -26,7 +27,7 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
             FileProcessingTask fileProcessingTask = FILE_PROCESSING_TASK_MAP.get(processingTask.getProcessIdentifies());
             return fileProcessingTask.getProcessIdentifies();
         }
-        threadPoolTaskExecutor.execute(processingTask);
+        threadPoolTaskScheduler.execute(processingTask);
 
         return processingTask.getProcessIdentifies();
     }
