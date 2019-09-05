@@ -70,4 +70,5 @@ public interface ExcelFileProcessingTask extends FileProcessingTask {
      * @param cellStyles
      */
     void setCellStyles(Map<Integer, CellStyle> cellStyles);
+
 }

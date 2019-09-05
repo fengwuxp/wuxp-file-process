@@ -1,5 +1,7 @@
 package test.com.wuxp.fileprocess.excel.im;
 
+import com.wuxp.fileprocess.core.FileProcessingTask;
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import com.wuxp.fileprocess.excel.formatter.ExportCellDataFormatter;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import test.com.wuxp.fileprocess.excel.TestFileProcessingApplication;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
@@ -90,7 +93,7 @@ public class DefaultImportExcelFileProcessorTest {
         });
 
 
-        dtoDefaultImportExcelRowDateConverter.setFormatter("desc", new ExportCellDataFormatter<String,List<String>>() {
+        dtoDefaultImportExcelRowDateConverter.setFormatter("desc", new ExportCellDataFormatter<String, List<String>>() {
             @Override
             public String parse(String cellValue, List<String> rowData) throws ParseException {
                 return String.format("%s%s", rowData.get(7), rowData.get(8));
@@ -99,13 +102,29 @@ public class DefaultImportExcelFileProcessorTest {
 
         DefaultImportExcelFileProcessingTask defaultImportExcelFileProcessor = new DefaultImportExcelFileProcessingTask(
                 new File(getClass().getResource("/import_example.xlsx").getFile()),
+                1,
                 dtoDefaultImportExcelRowDateConverter,
                 data -> {
-                    log.info("{}", data);
+                    log.info("数据处理-->{}", data);
                     return new ExcelRowDataHandleResult(false, "11223");
-                });
+                }, new FileProcessingTaskAware() {
+            @Override
+            public void preProcess(FileProcessingTask fileProcessingTask) {
+                log.info("开始处理");
+            }
 
+            @Override
+            public void postProcess(FileProcessingTask fileProcessingTask) {
+                log.info("处理完成");
+            }
+        });
+        File file = new File("D:/1.xlsx");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         defaultImportExcelFileProcessor.run();
+        FileOutputStream outputStream = new FileOutputStream(file);
+        defaultImportExcelFileProcessor.exportFailureFile(outputStream);
 
 //        String join = fileProcessingTaskManager.join(defaultImportExcelFileProcessor);
 //        log.info("id = {}", join);

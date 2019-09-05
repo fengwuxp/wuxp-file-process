@@ -4,6 +4,7 @@ package com.wuxp.fileprocess.excel;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.im.DefaultImportExcelFileProcessingTask;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,8 +27,8 @@ public class ImportExcelFileTaskBuilder {
 
     }
 
-    //    @Getter
-    public class InnerImportExcelFileTaskBuilder {
+    @Getter
+    public class InnerImportExcelFileTaskBuilder implements ExcelProcessTaskBuilder {
 
         /**
          * 文件流
@@ -117,17 +118,25 @@ public class ImportExcelFileTaskBuilder {
          *
          * @return 任务标识
          */
+        public String start(ExcelProcessTaskFactory factory) {
+            assert factory != null;
+            ExcelFileProcessingTask task = factory.factory(this);
+            return fileProcessingTaskManager.join(task);
+        }
+
+        @Override
         public String start() {
-
             assert this.inputStream != null;
-
-            return fileProcessingTaskManager.join(new DefaultImportExcelFileProcessingTask(
-                    this.taskName,
-                    this.headTitleLine,
-                    this.inputStream,
-                    this.importExcelRowDateConverter,
-                    this.importExcelRowDataHandler,
-                    this.fileProcessingTaskAware));
+            return this.start((ExcelProcessTaskFactory<InnerImportExcelFileTaskBuilder>) builder ->
+                    new DefaultImportExcelFileProcessingTask(
+                            builder.getTaskName(),
+                            builder.getHeadTitleLine(),
+                            builder.getInputStream(),
+                            builder.getImportExcelRowDateConverter(),
+                            builder.getImportExcelRowDataHandler(),
+                            builder.getFileProcessingTaskAware()));
         }
     }
+
+
 }

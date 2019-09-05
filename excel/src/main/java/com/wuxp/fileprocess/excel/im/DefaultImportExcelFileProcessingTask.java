@@ -14,10 +14,7 @@ import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -56,7 +53,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     /**
      * 表头的行数
      */
-    private Integer headTitleLine = 1;
+    private Integer headTitleLine;
 
 
     /**
@@ -101,18 +98,61 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
 
     @Override
+    public void exportFailureFile(OutputStream outputStream) {
+        if (outputStream == null) {
+            return;
+        }
+
+        final ExcelWriter writer = EasyExcelFactory.getWriter(outputStream);
+
+        int size = this.sheets.size();
+        for (int i = 0; i < size; i++) {
+            Sheet sheet = this.sheets.get(i);
+            List<List<String>> head = sheet.getHead();
+            if (head == null) {
+                continue;
+            }
+            head.add(Arrays.asList("失败原因"));
+//            head.add(Arrays.asList("原始行号"));
+            sheet.setHead(head);
+            writer.write0(this.failureRows.stream().map(Arrays::asList).collect(Collectors.toList()), sheet);
+        }
+        writer.finish();
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     protected void process() throws Exception {
 
+        int headTitleLine = this.headTitleLine;
+        int headLineMun = headTitleLine - 1;
         log.info("开始导入任务的处理");
         ExcelReader excelReader = EasyExcelFactory.getReader(this.inputStream, new AnalysisEventListener<List<String>>() {
             @Override
             public void invoke(List<String> row, AnalysisContext analysisContext) {
                 Sheet currentSheet = analysisContext.getCurrentSheet();
                 //跳过表头
-                int headLineMun = currentSheet.getHeadLineMun();
+//                int headLineMun = currentSheet.getHeadLineMun();
                 int currentRowNum = analysisContext.getCurrentRowNum();
                 if (currentRowNum <= headLineMun) {
                     log.info("跳过表头");
+                    currentSheet.setHeadLineMun(headTitleLine);
+                    if (currentSheet.getHead() == null) {
+                        List<List<String>> titles = new ArrayList<List<String>>();
+                        row.forEach(s -> {
+                            List<String> title = new ArrayList<>();
+                            title.add(s);
+                            titles.add(title);
+                        });
+                        currentSheet.setHead(titles);
+                    }
+
                     return;
                 }
 
@@ -153,21 +193,20 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         sheets.forEach(excelReader::read);
     }
 
-    @Override
-    public void exportFailureFile(OutputStream outputStream) {
-
-        final ExcelWriter writer = EasyExcelFactory.getWriter(outputStream);
-
-        this.sheets.forEach(sheet -> {
-//            Sheet failureSheet = new Sheet(1, 1);
-            List<List<String>> head = sheet.getHead();
-            head.get(0).add("失败原因");
-            sheet.setHead(head);
-            writer.write0(this.failureRows.stream().map(Arrays::asList).collect(Collectors.toList()), sheet);
-        });
-        writer.finish();
-
-    }
+    /**
+     * 创建一个新的sheet 用于导出失败的xlsx
+     *
+     * @param index
+     * @param titles
+     * @return
+     */
+//    protected Sheet createNewSheet(int index, List<List<String>> titles) {
+//
+//        Sheet sheet = new Sheet(index + 1, this.headTitleLine);
+//        sheet.setHead(titles);
+//        sheet.setAutoWidth(true);
+//        return sheet;
+//    }
 
     /**
      * 添加错误的行记录
@@ -179,6 +218,8 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     protected void addFailureRow(List<String> row, String cause, int originalLineNumber) {
         List<String> arrayList = new ArrayList<>(row);
         arrayList.add(cause);
+//        arrayList.add(originalLineNumber + 1 + "");
+        this.failureRows.add(arrayList.toArray(new String[0]));
         increaseFailureTotal();
     }
 }

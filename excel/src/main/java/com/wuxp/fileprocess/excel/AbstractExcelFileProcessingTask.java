@@ -161,6 +161,7 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
         log.info("任务处理结束 {}", this.name);
     }
 
+
     protected abstract void process() throws Exception;
 
     protected void increaseSuccessTotal() {

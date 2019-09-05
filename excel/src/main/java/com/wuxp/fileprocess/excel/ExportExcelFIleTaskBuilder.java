@@ -6,6 +6,7 @@ import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,8 @@ public class ExportExcelFIleTaskBuilder {
         return new InnerExportExcelFIleTaskBuilder();
     }
 
-    public class InnerExportExcelFIleTaskBuilder {
+    @Getter
+    public class InnerExportExcelFIleTaskBuilder implements ExcelProcessTaskBuilder {
 
         /**
          * 任务名称
@@ -80,6 +82,14 @@ public class ExportExcelFIleTaskBuilder {
             return this;
         }
 
+
+        @Override
+        public String start(ExcelProcessTaskFactory factory) {
+            assert factory != null;
+            ExcelFileProcessingTask task = factory.factory(this);
+            return fileProcessingTaskManager.join(task);
+        }
+
         /**
          * 启动任务
          *
@@ -87,12 +97,13 @@ public class ExportExcelFIleTaskBuilder {
          */
         public String start() {
 
-            return fileProcessingTaskManager.join(new DefaultExportExcelFileProcessingTask(
-                    this.taskName,
-                    this.excelCells,
-                    this.exportExcelDataGrabber,
-                    this.exportExcelRowDataConverter,
-                    this.fileProcessingTaskAware));
+            return this.start((ExcelProcessTaskFactory<InnerExportExcelFIleTaskBuilder>) builder ->
+                    new DefaultExportExcelFileProcessingTask(
+                            builder.getTaskName(),
+                            builder.getExcelCells(),
+                            builder.getExportExcelDataGrabber(),
+                            builder.getExportExcelRowDataConverter(),
+                            builder.getFileProcessingTaskAware()));
         }
     }
 }

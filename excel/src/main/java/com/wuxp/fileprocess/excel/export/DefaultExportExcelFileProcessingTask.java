@@ -79,8 +79,10 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
 
     @Override
     public void exportFile(OutputStream outputStream) {
+        if (outputStream == null) {
+            return;
+        }
         ExcelWriter excelWriter = EasyExcelFactory.getWriter(outputStream);
-
         List<List<List<String>>> cacheResult = this.cacheResult;
         List<Sheet> cacheSheets = this.cacheSheets;
         for (int i = 0; i < this.cacheResult.size(); i++) {

@@ -1,5 +1,7 @@
 package test.com.wuxp.fileprocess.excel.export;
 
+import com.wuxp.fileprocess.core.FileProcessingTask;
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
@@ -95,7 +97,17 @@ public class DefaultExportExcelFileProcessingTaskTest {
                 },
                 new DefaultExportExcelRowDataConverter(cells.stream().map(exportExcelCell -> exportExcelCell.getValue()).collect(Collectors.toList()))
 
-        );
+                , new FileProcessingTaskAware() {
+            @Override
+            public void preProcess(FileProcessingTask fileProcessingTask) {
+                log.info("开始处理");
+            }
+
+            @Override
+            public void postProcess(FileProcessingTask fileProcessingTask) {
+                log.info("处理完成");
+            }
+        });
 
         defaultExportExcelFileProcessingTask.run();
         File file = new File("D:/1.xlsx");
