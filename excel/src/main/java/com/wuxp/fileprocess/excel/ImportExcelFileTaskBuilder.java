@@ -38,6 +38,11 @@ public class ImportExcelFileTaskBuilder {
          */
         private String taskName;
 
+        /**
+         * 表头的行数 ,默认：1
+         */
+        private Integer headTitleLine = 1;
+
 
         /**
          * 数据转换器
@@ -72,6 +77,10 @@ public class ImportExcelFileTaskBuilder {
             return this;
         }
 
+        public InnerImportExcelFileTaskBuilder headTitleLine(int headTitleLine) {
+            this.headTitleLine = headTitleLine;
+            return this;
+        }
 
         /**
          * 使用文件对象来初始化任务
@@ -103,6 +112,7 @@ public class ImportExcelFileTaskBuilder {
 
             return fileProcessingTaskManager.join(new DefaultImportExcelFileProcessingTask(
                     this.taskName,
+                    this.headTitleLine,
                     this.inputStream,
                     this.importExcelRowDateConverter,
                     this.importExcelRowDataHandler));

@@ -52,24 +52,25 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
 
     /**
+     * 表头的行数
+     */
+    private Integer headTitleLine = 1;
+
+
+    /**
      * @param file
      * @param importExcelRowDateConverter
      * @param importExcelRowDataHandler
      */
     public DefaultImportExcelFileProcessingTask(File file,
+                                                int headTitleLine,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
-                                                ImportExcelRowDataHandler importExcelRowDataHandler) {
-        super(file.getName());
-        try {
-            this.inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        this.importExcelRowDateConverter = importExcelRowDateConverter;
-        this.importExcelRowDataHandler = importExcelRowDataHandler;
+                                                ImportExcelRowDataHandler importExcelRowDataHandler) throws FileNotFoundException {
+        this(file.getName(), headTitleLine, new FileInputStream(file), importExcelRowDateConverter, importExcelRowDataHandler);
     }
 
     public DefaultImportExcelFileProcessingTask(String name,
+                                                int headTitleLine,
                                                 InputStream inputStream,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler) {
@@ -77,6 +78,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         this.inputStream = inputStream;
         this.importExcelRowDateConverter = importExcelRowDateConverter;
         this.importExcelRowDataHandler = importExcelRowDataHandler;
+        this.headTitleLine = headTitleLine;
     }
 
     @Override

@@ -3,8 +3,8 @@ server:
   servlet:
     context-path: /example
 
-spring:
-  task:
-    scheduling:
-      pool:
-        size: 2
+#spring:
+#  task:
+#    scheduling:
+#      pool:
+#        size: 2

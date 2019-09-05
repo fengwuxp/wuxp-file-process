@@ -14,6 +14,7 @@ import java.util.Map;
 @Slf4j
 public class SimpleFileProcessingTaskManager implements FileProcessingTaskManager {
 
+    // 任务处理缓存
     private final static Map<String, FileProcessingTask> FILE_PROCESSING_TASK_MAP = new ConcurrentReferenceHashMap<>();
 
     @Autowired()
@@ -22,14 +23,17 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
     @Override
     public String join(FileProcessingTask processingTask) {
 
-        if (!FILE_PROCESSING_TASK_MAP.containsKey(processingTask.getProcessIdentifies())) {
+        String processIdentifies = processingTask.getProcessIdentifies();
+        if (FILE_PROCESSING_TASK_MAP.containsKey(processIdentifies)) {
 
-            FileProcessingTask fileProcessingTask = FILE_PROCESSING_TASK_MAP.get(processingTask.getProcessIdentifies());
+            FileProcessingTask fileProcessingTask = FILE_PROCESSING_TASK_MAP.get(processIdentifies);
             return fileProcessingTask.getProcessIdentifies();
         }
         threadPoolTaskScheduler.execute(processingTask);
 
-        return processingTask.getProcessIdentifies();
+        FILE_PROCESSING_TASK_MAP.put(processIdentifies, processingTask);
+
+        return processIdentifies;
     }
 
     @Override

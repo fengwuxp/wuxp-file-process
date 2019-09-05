@@ -37,7 +37,8 @@ public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManage
         if (row == null) {
             return null;
         }
-        Map<String, Object> resultData = new HashMap<String, Object>(row.size());
+        int size = row.size();
+        Map<String, Object> resultData = new HashMap<String, Object>(size);
 
 
         filedNameMapIndex.forEach((index, val) -> {
@@ -45,6 +46,11 @@ public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManage
             String filedName = filedNameMapIndex.get(index);
             if (!StringUtils.hasText(filedName)) {
                 throw new RuntimeException("未获取到file name,在第" + index + "列数据中");
+            }
+            if (index > size - 1) {
+                log.warn("数据列数：{},index={}", size, index);
+                resultData.put(filedName, null);
+                return;
             }
             String cellData = row.get(index);
             Formatter formatter = getFormatter(val.getClass(), filedName, index);

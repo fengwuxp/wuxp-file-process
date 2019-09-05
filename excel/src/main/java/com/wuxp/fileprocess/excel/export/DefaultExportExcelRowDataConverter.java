@@ -21,7 +21,6 @@ import java.util.*;
 public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManager implements ExportExcelFileProcessingTask.ExportExcelRowDataConverter<T> {
 
 
-
     private Map<Integer, String> filedNameMapIndex = new LinkedHashMap<>();
 
     /**
@@ -52,7 +51,13 @@ public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManage
 
         List<String> result = new ArrayList<>();
 
-        for (int i = 0; i < valueExpressions.size(); i++) {
+        int size = valueExpressions.size();
+        for (int i = 0; i < size; i++) {
+            if (i > size - 1) {
+                log.warn("数据列数：{},index={}", size, i);
+                result.add(null);
+                break;
+            }
             String valueExpression = valueExpressions.get(i);
             Expression expression = this.expressionMap.get(valueExpression);
             if (expression == null) {

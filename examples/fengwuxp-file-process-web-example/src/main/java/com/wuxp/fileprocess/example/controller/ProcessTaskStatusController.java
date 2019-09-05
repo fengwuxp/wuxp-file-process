@@ -40,7 +40,7 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
     @ResponseBody
     public ExcelProcessStatusDTO getProcessStatus(String taskId) {
 
-        return this.getProcessStatus(taskId);
+        return super.getProcessStatus(taskId);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
      */
     @RequestMapping("export_file")
     public void exportFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
-        this.exportFile(taskId, fileName, response);
+        super.exportFile(taskId, fileName, response);
     }
 
 
@@ -66,6 +66,6 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
      */
     @RequestMapping("export_failure")
     public void exportImportFailureFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
-        this.exportImportFailureFile(taskId, fileName, response);
+        super.exportImportFailureFile(taskId, fileName, response);
     }
 }
