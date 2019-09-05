@@ -6,6 +6,8 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
+import com.wuxp.fileprocess.core.FileProcessingTask;
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
@@ -65,20 +67,23 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     public DefaultImportExcelFileProcessingTask(File file,
                                                 int headTitleLine,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
-                                                ImportExcelRowDataHandler importExcelRowDataHandler) throws FileNotFoundException {
-        this(file.getName(), headTitleLine, new FileInputStream(file), importExcelRowDateConverter, importExcelRowDataHandler);
+                                                ImportExcelRowDataHandler importExcelRowDataHandler,
+                                                FileProcessingTaskAware fileProcessingTaskAware) throws FileNotFoundException {
+        this(file.getName(), headTitleLine, new FileInputStream(file), importExcelRowDateConverter, importExcelRowDataHandler, fileProcessingTaskAware);
     }
 
     public DefaultImportExcelFileProcessingTask(String name,
                                                 int headTitleLine,
                                                 InputStream inputStream,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
-                                                ImportExcelRowDataHandler importExcelRowDataHandler) {
-        super(name);
+                                                ImportExcelRowDataHandler importExcelRowDataHandler,
+                                                FileProcessingTaskAware fileProcessingTaskAware) {
+        super(name, fileProcessingTaskAware);
         this.inputStream = inputStream;
         this.importExcelRowDateConverter = importExcelRowDateConverter;
         this.importExcelRowDataHandler = importExcelRowDataHandler;
         this.headTitleLine = headTitleLine;
+        this.fileProcessingTaskAware = fileProcessingTaskAware;
     }
 
     @Override
@@ -97,6 +102,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
     @Override
     protected void process() throws Exception {
+
         log.info("开始导入任务的处理");
         ExcelReader excelReader = EasyExcelFactory.getReader(this.inputStream, new AnalysisEventListener<List<String>>() {
             @Override
@@ -119,24 +125,25 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                 try {
                     Object data = importExcelRowDateConverter.convert(row);
                     if (data == null) {
-                        addFailureRow(row, "构建数据结果为null");
+                        addFailureRow(row, "构建数据结果为null", currentRowNum);
                         return;
                     }
                     ExcelRowDataHandleResult excelRowDataHandleResult = importExcelRowDataHandler.handle(data);
                     if (excelRowDataHandleResult.isSuccess()) {
                         increaseSuccessTotal();
                     } else {
-                        addFailureRow(row, excelRowDataHandleResult.getFailCause());
+                        addFailureRow(row, excelRowDataHandleResult.getFailCause(), currentRowNum);
                     }
                 } catch (Exception e) {
                     log.error("导入处理异常", e);
-                    addFailureRow(row, e.getMessage());
+                    addFailureRow(row, e.getMessage(), currentRowNum);
                 }
             }
 
             @Override
             public void doAfterAllAnalysed(AnalysisContext analysisContext) {
                 //处理完成
+
 
             }
         });
@@ -166,12 +173,12 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
      * 添加错误的行记录
      *
      * @param row
-     * @param cause
+     * @param cause              失败原因
+     * @param originalLineNumber 原始的行号
      */
-    private void addFailureRow(List<String> row, String cause) {
+    protected void addFailureRow(List<String> row, String cause, int originalLineNumber) {
         List<String> arrayList = new ArrayList<>(row);
         arrayList.add(cause);
-        this.failureRows.add(arrayList.toArray(new String[0]));
         increaseFailureTotal();
     }
 }

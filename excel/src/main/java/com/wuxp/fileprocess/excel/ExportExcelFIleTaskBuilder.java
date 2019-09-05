@@ -1,6 +1,7 @@
 package com.wuxp.fileprocess.excel;
 
 
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
@@ -45,6 +46,12 @@ public class ExportExcelFIleTaskBuilder {
          */
         private ExportExcelFileProcessingTask.ExportExcelRowDataConverter exportExcelRowDataConverter;
 
+        /**
+         * 任务前后处理
+         */
+        protected FileProcessingTaskAware fileProcessingTaskAware;
+
+
         private InnerExportExcelFIleTaskBuilder() {
         }
 
@@ -68,6 +75,10 @@ public class ExportExcelFIleTaskBuilder {
             return this;
         }
 
+        public InnerExportExcelFIleTaskBuilder fileProcessingTaskAware(FileProcessingTaskAware fileProcessingTaskAware) {
+            this.fileProcessingTaskAware = fileProcessingTaskAware;
+            return this;
+        }
 
         /**
          * 启动任务
@@ -80,7 +91,8 @@ public class ExportExcelFIleTaskBuilder {
                     this.taskName,
                     this.excelCells,
                     this.exportExcelDataGrabber,
-                    this.exportExcelRowDataConverter));
+                    this.exportExcelRowDataConverter,
+                    this.fileProcessingTaskAware));
         }
     }
 }

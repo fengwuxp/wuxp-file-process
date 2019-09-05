@@ -3,6 +3,7 @@ package com.wuxp.fileprocess.excel.export;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
@@ -66,11 +67,13 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
     public DefaultExportExcelFileProcessingTask(String taskName,
                                                 List<ExportExcelCell> excelCells,
                                                 ExportExcelDataGrabber exportExcelDataGrabber,
-                                                ExportExcelRowDataConverter exportExcelRowDataConverter) {
-        super(taskName);
+                                                ExportExcelRowDataConverter exportExcelRowDataConverter,
+                                                FileProcessingTaskAware fileProcessingTaskAware) {
+        super(taskName, fileProcessingTaskAware);
         this.exportExcelDataGrabber = exportExcelDataGrabber;
         this.exportExcelRowDataConverter = exportExcelRowDataConverter;
         this.excelCells = excelCells;
+        this.fileProcessingTaskAware = fileProcessingTaskAware;
     }
 
 

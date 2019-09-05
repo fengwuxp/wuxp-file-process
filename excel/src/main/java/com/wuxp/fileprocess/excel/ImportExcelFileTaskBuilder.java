@@ -1,6 +1,7 @@
 package com.wuxp.fileprocess.excel;
 
 
+import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.im.DefaultImportExcelFileProcessingTask;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,11 @@ public class ImportExcelFileTaskBuilder {
          */
         private ImportExcelFileProcessingTask.ImportExcelRowDataHandler importExcelRowDataHandler;
 
+        /**
+         * 任务前后处理
+         */
+        protected FileProcessingTaskAware fileProcessingTaskAware;
+
         private InnerImportExcelFileTaskBuilder() {
         }
 
@@ -79,6 +85,11 @@ public class ImportExcelFileTaskBuilder {
 
         public InnerImportExcelFileTaskBuilder headTitleLine(int headTitleLine) {
             this.headTitleLine = headTitleLine;
+            return this;
+        }
+
+        public InnerImportExcelFileTaskBuilder fileProcessingTaskAware(FileProcessingTaskAware fileProcessingTaskAware) {
+            this.fileProcessingTaskAware = fileProcessingTaskAware;
             return this;
         }
 
@@ -115,7 +126,8 @@ public class ImportExcelFileTaskBuilder {
                     this.headTitleLine,
                     this.inputStream,
                     this.importExcelRowDateConverter,
-                    this.importExcelRowDataHandler));
+                    this.importExcelRowDataHandler,
+                    this.fileProcessingTaskAware));
         }
     }
 }
