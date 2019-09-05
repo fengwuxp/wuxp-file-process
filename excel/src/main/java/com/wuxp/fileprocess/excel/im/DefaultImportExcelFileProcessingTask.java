@@ -123,11 +123,10 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                         return;
                     }
                     ExcelRowDataHandleResult excelRowDataHandleResult = importExcelRowDataHandler.handle(data);
-                    if (!excelRowDataHandleResult.isSuccess()) {
-                        addFailureRow(row, excelRowDataHandleResult.getFailCause());
-                        increaseFailureTotal();
-                    } else {
+                    if (excelRowDataHandleResult.isSuccess()) {
                         increaseSuccessTotal();
+                    } else {
+                        addFailureRow(row, excelRowDataHandleResult.getFailCause());
                     }
                 } catch (Exception e) {
                     log.error("导入处理异常", e);
@@ -173,5 +172,6 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         List<String> arrayList = new ArrayList<>(row);
         arrayList.add(cause);
         this.failureRows.add(arrayList.toArray(new String[0]));
+        increaseFailureTotal();
     }
 }
