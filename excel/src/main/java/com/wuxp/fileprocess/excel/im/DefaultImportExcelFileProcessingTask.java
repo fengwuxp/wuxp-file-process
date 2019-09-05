@@ -193,6 +193,15 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         sheets.forEach(excelReader::read);
     }
 
+    public List<Sheet> getSheets() {
+        return Collections.unmodifiableList(sheets);
+    }
+
+    public Integer getHeadTitleLine() {
+        return headTitleLine;
+    }
+
+
     /**
      * 创建一个新的sheet 用于导出失败的xlsx
      *
