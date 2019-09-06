@@ -1,6 +1,7 @@
 package com.wuxp.fileprocess.excel;
 
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -40,18 +41,22 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
 
     protected FileProcessingTaskAware fileProcessingTaskAware;
 
+
+    protected FileProcessingTaskManager fileProcessingTaskManager;
+
     /**
      * 每列的样式设置
      */
     protected Map<Integer, CellStyle> cellStyleMap = new HashMap<Integer, CellStyle>();
 
-    public AbstractExcelFileProcessingTask(String name) {
-        this(name, null);
-    }
 
-    public AbstractExcelFileProcessingTask(String name, FileProcessingTaskAware fileProcessingTaskAware) {
+    public AbstractExcelFileProcessingTask(String name,
+                                           FileProcessingTaskAware fileProcessingTaskAware,
+                                           FileProcessingTaskManager fileProcessingTaskManager) {
 
         this.name = name;
+        this.fileProcessingTaskAware = fileProcessingTaskAware;
+        this.fileProcessingTaskManager = fileProcessingTaskManager;
         this.processIdentifies = UUID.randomUUID().toString().replace("-", "");
     }
 
@@ -155,7 +160,7 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
         }
 
         if (needHandleAware) {
-            fileProcessingTaskAware.postProcess(this);
+            fileProcessingTaskAware.postProcess(this, fileProcessingTaskManager);
         }
         this.processEndTime = new Date();
         log.info("任务处理结束 {}", this.name);

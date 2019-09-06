@@ -54,4 +54,16 @@ public interface FileProcessingTask extends Runnable {
      */
     void interruptProcess();
 
+    /**
+     * 任务是否结束
+     *
+     * @return
+     */
+    default boolean isEnd() {
+        ProcessStatus processStatus = getProcessStatus();
+        return ProcessStatus.SUCCESS.equals(processStatus)
+                || ProcessStatus.PART_SUCCESS.equals(processStatus)
+                || ProcessStatus.ERROR.equals(processStatus);
+    }
+
 }

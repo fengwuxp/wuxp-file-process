@@ -25,11 +25,20 @@ public interface FileProcessingTaskManager {
 
 
     /**
-     * 移除任务
+     * 移除任务，如果任务未结束，将不会进行移除
      *
      * @param identifies
      * @return
      */
     FileProcessingTask remove(String identifies);
+
+    /**
+     * 关闭并移除任务
+     *
+     * @param identifies
+     * @return
+     */
+    FileProcessingTask closeAndRemove(String identifies);
+
 
 }

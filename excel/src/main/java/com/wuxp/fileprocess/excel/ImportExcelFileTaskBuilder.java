@@ -134,7 +134,8 @@ public class ImportExcelFileTaskBuilder {
                             builder.getInputStream(),
                             builder.getImportExcelRowDateConverter(),
                             builder.getImportExcelRowDataHandler(),
-                            builder.getFileProcessingTaskAware()));
+                            builder.getFileProcessingTaskAware(),
+                            fileProcessingTaskManager));
         }
     }
 

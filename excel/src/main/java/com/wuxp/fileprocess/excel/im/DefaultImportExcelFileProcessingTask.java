@@ -8,6 +8,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
 import com.wuxp.fileprocess.core.FileProcessingTask;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
@@ -65,8 +66,15 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                                                 int headTitleLine,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler,
-                                                FileProcessingTaskAware fileProcessingTaskAware) throws FileNotFoundException {
-        this(file.getName(), headTitleLine, new FileInputStream(file), importExcelRowDateConverter, importExcelRowDataHandler, fileProcessingTaskAware);
+                                                FileProcessingTaskAware fileProcessingTaskAware,
+                                                FileProcessingTaskManager fileProcessingTaskManager) throws FileNotFoundException {
+        this(file.getName(),
+                headTitleLine,
+                new FileInputStream(file),
+                importExcelRowDateConverter,
+                importExcelRowDataHandler,
+                fileProcessingTaskAware,
+                fileProcessingTaskManager);
     }
 
     public DefaultImportExcelFileProcessingTask(String name,
@@ -74,8 +82,9 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                                                 InputStream inputStream,
                                                 ImportExcelRowDateConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler,
-                                                FileProcessingTaskAware fileProcessingTaskAware) {
-        super(name, fileProcessingTaskAware);
+                                                FileProcessingTaskAware fileProcessingTaskAware,
+                                                FileProcessingTaskManager fileProcessingTaskManager) {
+        super(name, fileProcessingTaskAware, fileProcessingTaskManager);
         this.inputStream = inputStream;
         this.importExcelRowDateConverter = importExcelRowDateConverter;
         this.importExcelRowDataHandler = importExcelRowDataHandler;
@@ -130,6 +139,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     @Override
     protected void process() throws Exception {
 
+        FileProcessingTask fileProcessingTask = this;
         int headTitleLine = this.headTitleLine;
         int headLineMun = headTitleLine - 1;
         log.info("开始导入任务的处理");
@@ -173,6 +183,9 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
                         increaseSuccessTotal();
                     } else {
                         addFailureRow(row, excelRowDataHandleResult.getFailCause(), currentRowNum);
+                    }
+                    if (fileProcessingTaskAware != null) {
+                        fileProcessingTaskAware.process(fileProcessingTask, data);
                     }
                 } catch (Exception e) {
                     log.error("导入处理异常", e);

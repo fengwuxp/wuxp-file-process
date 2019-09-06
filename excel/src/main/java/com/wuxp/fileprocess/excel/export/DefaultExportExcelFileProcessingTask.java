@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
@@ -68,8 +69,9 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
                                                 List<ExportExcelCell> excelCells,
                                                 ExportExcelDataGrabber exportExcelDataGrabber,
                                                 ExportExcelRowDataConverter exportExcelRowDataConverter,
-                                                FileProcessingTaskAware fileProcessingTaskAware) {
-        super(taskName, fileProcessingTaskAware);
+                                                FileProcessingTaskAware fileProcessingTaskAware,
+                                                FileProcessingTaskManager fileProcessingTaskManager) {
+        super(taskName, fileProcessingTaskAware,fileProcessingTaskManager);
         this.exportExcelDataGrabber = exportExcelDataGrabber;
         this.exportExcelRowDataConverter = exportExcelRowDataConverter;
         this.excelCells = excelCells;
@@ -126,8 +128,8 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
 
     @Override
     protected void process() throws Exception {
-        int fetchSize = this.fetchSize;
 
+        int fetchSize = this.fetchSize;
         //抓取数据
         int totalNumber = (int) exportExcelDataGrabber.getTotalNumber();
         this.processTotal = totalNumber;
@@ -144,6 +146,7 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
         int queryPage = 1;
         List<List<String>> results = new ArrayList<>(maxPage == Integer.MAX_VALUE ? sheetMaxRows : totalNumber);
         ExportExcelDataGrabber exportExcelDataGrabber = this.exportExcelDataGrabber;
+        FileProcessingTaskAware fileProcessingTaskAware = this.fileProcessingTaskAware;
 
         while (maxPage-- >= 0) {
             //抓取数据
@@ -166,6 +169,10 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
                     newSheet = this.createNewSheet(this.currentSheetIndex);
                     results = new ArrayList<>();
                 }
+                if (fileProcessingTaskAware != null) {
+                    fileProcessingTaskAware.process(this, rows);
+                }
+
             }
             queryPage++;
         }

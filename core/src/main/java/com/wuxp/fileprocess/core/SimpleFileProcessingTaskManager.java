@@ -43,6 +43,29 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
 
     @Override
     public FileProcessingTask remove(String identifies) {
+        FileProcessingTask fileProcessingTask = this.get(identifies);
+        if (fileProcessingTask == null) {
+            return null;
+        }
+        if (!fileProcessingTask.isEnd()) {
+            return fileProcessingTask;
+        }
+        return FILE_PROCESSING_TASK_MAP.remove(identifies);
+    }
+
+    @Override
+    public FileProcessingTask closeAndRemove(String identifies) {
+
+        FileProcessingTask fileProcessingTask = this.get(identifies);
+        if (fileProcessingTask == null) {
+            return null;
+        }
+        if (fileProcessingTask.isEnd()) {
+            return FILE_PROCESSING_TASK_MAP.remove(identifies);
+        }
+        //中断任务
+        fileProcessingTask.interruptProcess();
+
         return FILE_PROCESSING_TASK_MAP.remove(identifies);
     }
 }

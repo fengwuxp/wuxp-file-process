@@ -15,12 +15,24 @@ public interface FileProcessingTaskAware {
 
     }
 
+
+    /**
+     * 每处理一条记录的回调
+     *
+     * @param fileProcessingTask
+     * @param rowData
+     */
+    default void process(FileProcessingTask fileProcessingTask, Object rowData) {
+
+    }
+
     /**
      * 任务的后置处理
      *
      * @param fileProcessingTask
+     * @param fileProcessingTaskManager
      */
-    default void postProcess(FileProcessingTask fileProcessingTask) {
+    default void postProcess(FileProcessingTask fileProcessingTask, FileProcessingTaskManager fileProcessingTaskManager) {
 
     }
 }

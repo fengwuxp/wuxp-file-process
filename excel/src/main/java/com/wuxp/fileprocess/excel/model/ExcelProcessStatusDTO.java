@@ -3,6 +3,7 @@ package com.wuxp.fileprocess.excel.model;
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import java.util.Date;
 
@@ -75,6 +76,11 @@ public class ExcelProcessStatusDTO {
      * @return
      */
     public boolean getEnd() {
+        if (ProcessStatus.SUCCESS.equals(processStatus)
+                || ProcessStatus.PART_SUCCESS.equals(processStatus)
+                || ProcessStatus.ERROR.equals(processStatus)) {
+            return true;
+        }
         return this.processEndTime != null;
     }
 

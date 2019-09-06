@@ -103,7 +103,8 @@ public class ExportExcelFIleTaskBuilder {
                             builder.getExcelCells(),
                             builder.getExportExcelDataGrabber(),
                             builder.getExportExcelRowDataConverter(),
-                            builder.getFileProcessingTaskAware()));
+                            builder.getFileProcessingTaskAware(),
+                            fileProcessingTaskManager));
         }
     }
 }
