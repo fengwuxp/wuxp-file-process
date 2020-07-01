@@ -2,6 +2,7 @@ package test.com.wuxp.fileprocess.excel.export;
 
 import com.wuxp.fileprocess.core.FileProcessingTask;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
+import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
@@ -30,6 +31,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DefaultExportExcelFileProcessingTaskTest {
 
+
+    private FileProcessingTaskManager fileProcessingTaskManager;
+
     @Before
     public void before() throws Exception {
     }
@@ -43,7 +47,7 @@ public class DefaultExportExcelFileProcessingTaskTest {
      */
     @Test
     public void testExportFile() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -51,7 +55,7 @@ public class DefaultExportExcelFileProcessingTaskTest {
      */
     @Test
     public void testCreateNewSheet() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -104,10 +108,10 @@ public class DefaultExportExcelFileProcessingTaskTest {
             }
 
             @Override
-            public void postProcess(FileProcessingTask fileProcessingTask) {
+            public void postProcess(FileProcessingTask fileProcessingTask, FileProcessingTaskManager fileProcessingTaskManager) {
                 log.info("处理完成");
             }
-        });
+        }, fileProcessingTaskManager);
 
         defaultExportExcelFileProcessingTask.run();
         File file = new File("D:/1.xlsx");
@@ -124,7 +128,7 @@ public class DefaultExportExcelFileProcessingTaskTest {
      */
     @Test
     public void testWriteToCache() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -132,8 +136,8 @@ public class DefaultExportExcelFileProcessingTaskTest {
      */
     @Test
     public void testConverter() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
 
-} 
+}

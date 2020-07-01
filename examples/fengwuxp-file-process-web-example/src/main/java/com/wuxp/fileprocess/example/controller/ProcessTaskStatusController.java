@@ -36,6 +36,7 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
      * @param taskId
      * @return
      */
+    @Override
     @RequestMapping("get_process_status")
     @ResponseBody
     public ExcelProcessStatusDTO getProcessStatus(String taskId) {
@@ -51,6 +52,7 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
      * @param response
      * @throws Exception
      */
+    @Override
     @RequestMapping("export_file")
     public void exportFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
         super.exportFile(taskId, fileName, response);

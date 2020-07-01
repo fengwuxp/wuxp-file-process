@@ -38,8 +38,8 @@ import java.util.Locale;
 //@RunWith(SpringRunner.class)
 public class DefaultImportExcelFileProcessorTest {
 
-//    @Autowired
-//    private FileProcessingTaskManager fileProcessingTaskManager;
+    @Autowired
+    private FileProcessingTaskManager fileProcessingTaskManager;
 
     @Before
     public void before() throws Exception {
@@ -114,10 +114,11 @@ public class DefaultImportExcelFileProcessorTest {
             }
 
             @Override
-            public void postProcess(FileProcessingTask fileProcessingTask) {
+            public void postProcess(FileProcessingTask fileProcessingTask, FileProcessingTaskManager fileProcessingTaskManager) {
+
                 log.info("处理完成");
             }
-        });
+        }, fileProcessingTaskManager);
         File file = new File("D:/1.xlsx");
         if (!file.exists()) {
             file.createNewFile();
@@ -141,7 +142,7 @@ public class DefaultImportExcelFileProcessorTest {
      */
     @Test
     public void testGetFailureList() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -149,7 +150,7 @@ public class DefaultImportExcelFileProcessorTest {
      */
     @Test
     public void testGetFailureRows() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -157,7 +158,7 @@ public class DefaultImportExcelFileProcessorTest {
      */
     @Test
     public void testRun() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -165,7 +166,7 @@ public class DefaultImportExcelFileProcessorTest {
      */
     @Test
     public void testConvert() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
     /**
@@ -173,8 +174,8 @@ public class DefaultImportExcelFileProcessorTest {
      */
     @Test
     public void testHandle() throws Exception {
-//TODO: Test goes here... 
+//TODO: Test goes here...
     }
 
 
-} 
+}

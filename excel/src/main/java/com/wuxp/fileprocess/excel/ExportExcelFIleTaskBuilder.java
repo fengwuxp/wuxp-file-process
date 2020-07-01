@@ -82,6 +82,10 @@ public class ExportExcelFIleTaskBuilder {
             return this;
         }
 
+        @Override
+        public FileProcessingTaskManager getFileProcessingTaskManager() {
+            return fileProcessingTaskManager;
+        }
 
         @Override
         public String start(ExcelProcessTaskFactory factory) {

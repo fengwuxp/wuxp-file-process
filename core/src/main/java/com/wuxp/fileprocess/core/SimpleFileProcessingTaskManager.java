@@ -17,7 +17,7 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
     // 任务处理缓存
     private final static Map<String, FileProcessingTask> FILE_PROCESSING_TASK_MAP = new ConcurrentReferenceHashMap<>();
 
-    @Autowired()
+    @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
     @Override

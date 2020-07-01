@@ -94,6 +94,11 @@ public class ImportExcelFileTaskBuilder {
             return this;
         }
 
+        @Override
+        public FileProcessingTaskManager getFileProcessingTaskManager() {
+            return fileProcessingTaskManager;
+        }
+
         /**
          * 使用文件对象来初始化任务
          *

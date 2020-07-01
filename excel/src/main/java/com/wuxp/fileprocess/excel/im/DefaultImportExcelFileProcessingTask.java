@@ -59,8 +59,12 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
 
     /**
      * @param file
+     * @param headTitleLine
      * @param importExcelRowDateConverter
      * @param importExcelRowDataHandler
+     * @param fileProcessingTaskAware
+     * @param fileProcessingTaskManager
+     * @throws FileNotFoundException
      */
     public DefaultImportExcelFileProcessingTask(File file,
                                                 int headTitleLine,
@@ -201,7 +205,9 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
             }
         });
         List<Sheet> sheets = excelReader.getSheets();
-        this.sheets = sheets;
+        this.sheets = sheets.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         this.sheetTotal = sheets.size();
         sheets.forEach(excelReader::read);
     }
