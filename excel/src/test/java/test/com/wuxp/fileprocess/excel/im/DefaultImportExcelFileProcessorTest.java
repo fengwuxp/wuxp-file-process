@@ -119,13 +119,14 @@ public class DefaultImportExcelFileProcessorTest {
                 log.info("处理完成");
             }
         }, fileProcessingTaskManager);
-        File file = new File("D:/1.xlsx");
+        File file = new File(this.getClass().getResource("/").getPath() + "/1.xslx");
         if (!file.exists()) {
             file.createNewFile();
         }
         defaultImportExcelFileProcessor.run();
         FileOutputStream outputStream = new FileOutputStream(file);
         defaultImportExcelFileProcessor.exportFailureFile(outputStream);
+        file.delete();
 
 //        String join = fileProcessingTaskManager.join(defaultImportExcelFileProcessor);
 //        log.info("id = {}", join);

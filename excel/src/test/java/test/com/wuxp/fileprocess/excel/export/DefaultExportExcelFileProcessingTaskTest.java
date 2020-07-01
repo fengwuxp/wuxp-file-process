@@ -114,13 +114,14 @@ public class DefaultExportExcelFileProcessingTaskTest {
         }, fileProcessingTaskManager);
 
         defaultExportExcelFileProcessingTask.run();
-        File file = new File("D:/1.xlsx");
+        File file = new File(this.getClass().getResource("/").getPath() + "/1.xslx");
         if (!file.exists()) {
             file.createNewFile();
         }
         defaultExportExcelFileProcessingTask.exportFile(new FileOutputStream(file));
 
         log.info("运行时间：{}", System.currentTimeMillis() - l);
+        file.delete();
     }
 
     /**
