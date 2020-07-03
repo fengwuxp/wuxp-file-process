@@ -2,6 +2,7 @@ package com.wuxp.fileprocess.core;
 
 /**
  * 任务的前后处理
+ * @author wuxp
  */
 public interface FileProcessingTaskAware {
 

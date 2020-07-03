@@ -8,12 +8,14 @@ import java.util.List;
 
 /**
  * excel import processing task
+ *
+ * @author wuxp
  */
 public interface ImportExcelFileProcessingTask extends ExcelFileProcessingTask {
 
     /**
      * 获取失败的结果列表
-     * 返回被 {@link ImportExcelRowDateConverter} 转换过的数据列表
+     * 返回被 {@link ImportExcelRowDataConverter} 转换过的数据列表
      *
      * @param <T>
      * @return
@@ -36,14 +38,13 @@ public interface ImportExcelFileProcessingTask extends ExcelFileProcessingTask {
     void exportFailureFile(OutputStream outputStream);
 
 
-
     /**
      * 导入数据的 row 数据转换
      *
      * @param <T>
      */
     @FunctionalInterface()
-    interface ImportExcelRowDateConverter<T> {
+    interface ImportExcelRowDataConverter<T> {
 
         /**
          * 转换数据

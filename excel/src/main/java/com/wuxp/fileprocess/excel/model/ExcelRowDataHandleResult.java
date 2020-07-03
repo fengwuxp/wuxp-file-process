@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 /**
  * excel 行数据处理结果
+ * @author wuxp
  */
 @Data
 @Accessors(chain = true)

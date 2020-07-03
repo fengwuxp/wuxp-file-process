@@ -43,7 +43,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     /**
      * 数据converter
      */
-    protected ImportExcelRowDateConverter importExcelRowDateConverter;
+    protected ImportExcelRowDataConverter importExcelRowDateConverter;
 
     /**
      * 导入处理器
@@ -68,7 +68,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
      */
     public DefaultImportExcelFileProcessingTask(File file,
                                                 int headTitleLine,
-                                                ImportExcelRowDateConverter importExcelRowDateConverter,
+                                                ImportExcelRowDataConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler,
                                                 FileProcessingTaskAware fileProcessingTaskAware,
                                                 FileProcessingTaskManager fileProcessingTaskManager) throws FileNotFoundException {
@@ -84,7 +84,7 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
     public DefaultImportExcelFileProcessingTask(String name,
                                                 int headTitleLine,
                                                 InputStream inputStream,
-                                                ImportExcelRowDateConverter importExcelRowDateConverter,
+                                                ImportExcelRowDataConverter importExcelRowDateConverter,
                                                 ImportExcelRowDataHandler importExcelRowDataHandler,
                                                 FileProcessingTaskAware fileProcessingTaskAware,
                                                 FileProcessingTaskManager fileProcessingTaskManager) {

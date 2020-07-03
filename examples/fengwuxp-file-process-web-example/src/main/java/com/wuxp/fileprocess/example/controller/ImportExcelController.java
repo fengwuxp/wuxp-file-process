@@ -3,7 +3,7 @@ package com.wuxp.fileprocess.example.controller;
 import com.wuxp.fileprocess.example.model.ExampleDTO;
 import com.wuxp.fileprocess.excel.ImportExcelFileTaskBuilder;
 import com.wuxp.fileprocess.excel.formatter.ExportCellDataFormatter;
-import com.wuxp.fileprocess.excel.im.DefaultImportExcelRowDateConverter;
+import com.wuxp.fileprocess.excel.im.DefaultImportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ImportExcelController {
     @RequestMapping("import_example")
     public String importExample(@RequestParam("file") CommonsMultipartFile commonsMultipartFile, HttpServletRequest request) throws Exception {
 
-        DefaultImportExcelRowDateConverter<ExampleDTO> dtoDefaultImportExcelRowDateConverter = new DefaultImportExcelRowDateConverter<>(ExampleDTO.class);
+        DefaultImportExcelRowDataConverter<ExampleDTO> dtoDefaultImportExcelRowDateConverter = new DefaultImportExcelRowDataConverter<>(ExampleDTO.class);
 
         dtoDefaultImportExcelRowDateConverter
                 .putFiledName(0, "name")

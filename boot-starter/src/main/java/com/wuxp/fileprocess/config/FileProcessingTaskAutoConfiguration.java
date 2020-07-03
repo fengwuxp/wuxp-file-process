@@ -14,6 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * file processing task auto configuration
+ * @author wuxp
  */
 @Configuration
 @EnableConfigurationProperties(FileProcessingTaskProperties.class)

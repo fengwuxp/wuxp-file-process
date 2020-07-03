@@ -49,7 +49,7 @@ public class ImportExcelFileTaskBuilder {
         /**
          * 数据转换器
          */
-        private ImportExcelFileProcessingTask.ImportExcelRowDateConverter importExcelRowDateConverter;
+        private ImportExcelFileProcessingTask.ImportExcelRowDataConverter importExcelRowDateConverter;
 
         /**
          * 数据处理者
@@ -74,7 +74,7 @@ public class ImportExcelFileTaskBuilder {
             return this;
         }
 
-        public InnerImportExcelFileTaskBuilder importExcelRowDateConverter(ImportExcelFileProcessingTask.ImportExcelRowDateConverter importExcelRowDateConverter) {
+        public InnerImportExcelFileTaskBuilder importExcelRowDateConverter(ImportExcelFileProcessingTask.ImportExcelRowDataConverter importExcelRowDateConverter) {
             this.importExcelRowDateConverter = importExcelRowDateConverter;
             return this;
         }

@@ -18,16 +18,17 @@ import java.util.*;
 /**
  * 默认的 row data converter
  *
+ * @author wuxp
  * @param <T>
  */
 @Slf4j
-public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManager implements ImportExcelFileProcessingTask.ImportExcelRowDateConverter<T> {
+public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManager implements ImportExcelFileProcessingTask.ImportExcelRowDataConverter<T> {
 
     private Map<Integer, String> filedNameMapIndex = new LinkedHashMap<>();
 
     private Class<T> tClass;
 
-    public DefaultImportExcelRowDateConverter(Class<T> tClass) {
+    public DefaultImportExcelRowDataConverter(Class<T> tClass) {
         this.tClass = tClass;
     }
 
@@ -101,7 +102,7 @@ public class DefaultImportExcelRowDateConverter<T> extends SimpleFormatterManage
      * @param filedName
      * @return
      */
-    public DefaultImportExcelRowDateConverter<T> putFiledName(int cellIndex, String filedName) {
+    public DefaultImportExcelRowDataConverter<T> putFiledName(int cellIndex, String filedName) {
         this.filedNameMapIndex.put(cellIndex, filedName);
         return this;
     }
