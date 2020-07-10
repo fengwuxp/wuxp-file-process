@@ -6,10 +6,13 @@ import org.springframework.format.datetime.DateFormatter;
 
 import java.util.*;
 
+/**
+ * @author wuxp
+ */
 @Slf4j
 public class SimpleFormatterManager implements FormatterManager {
 
-    protected List<Formatter> formatters = new ArrayList<>();
+    protected Map<Integer, Formatter> formatters = new LinkedHashMap<>();
 
     protected Map<String, Formatter> formatterMap = new LinkedHashMap<>();
 
@@ -28,13 +31,14 @@ public class SimpleFormatterManager implements FormatterManager {
 
     @Override
     public FormatterManager addFormatter(Formatter formatter) {
-        formatters.add(formatter);
+        int size = this.formatters.size();
+        formatters.put(size, formatter);
         return this;
     }
 
     @Override
     public FormatterManager setFormatter(int index, Formatter formatter) {
-        formatters.set(index, formatter);
+        formatters.put(index, formatter);
         return this;
     }
 
@@ -67,9 +71,6 @@ public class SimpleFormatterManager implements FormatterManager {
         formatter = this.formatterMap.get(name);
         if (formatter != null) {
             return formatter;
-        }
-        if (index >= formatters.size() - 1) {
-            return null;
         }
         return this.formatters.get(index);
     }

@@ -16,6 +16,8 @@ import java.util.*;
  * default export excel row data converter
  * <p>
  * {@link org.springframework.expression.spel.standard.SpelExpressionParser}
+ *
+ * @author wuxp
  */
 @Slf4j
 public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManager implements ExportExcelFileProcessingTask.ExportExcelRowDataConverter<T> {
@@ -35,8 +37,10 @@ public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManage
 
     /**
      * 用来缓存的表达式的临时结果
+     *
+     * @key 表达式
      */
-    private Map<String/*表达式*/, Expression> expressionMap = new HashMap<>();
+    private Map<String, Expression> expressionMap = new HashMap<>();
 
     public DefaultExportExcelRowDataConverter(List<String> valueExpressions) {
         this.valueExpressions = valueExpressions;

@@ -11,14 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+import org.springframework.format.Formatter;
 import test.com.wuxp.fileprocess.excel.im.ExampleDTO;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -66,7 +65,7 @@ public class DefaultExportExcelFileProcessingTaskTest {
         long l = System.currentTimeMillis();
         List<ExportExcelCell> cells = new ArrayList<>();
 
-        String[] names = {"name", "age", "mobilePhone", "birthday", "isVip", "sex.name()", "balance", "desc"};
+        String[] names = {"name", "age", "mobilePhone", "birthday", "isVip", "sex", "balance", "desc"};
         String[] titles = {"姓名", "年龄", "手机号码", "生日", "是否vip", "性别", "余额", "说明"};
 
         for (int i = 0; i < 7; i++) {
@@ -75,6 +74,27 @@ public class DefaultExportExcelFileProcessingTaskTest {
             exportExcelCell.setTitle(titles[i]);
             cells.add(exportExcelCell);
         }
+
+        DefaultExportExcelRowDataConverter exportExcelRowDataConverter = new DefaultExportExcelRowDataConverter(cells.stream().map(exportExcelCell -> exportExcelCell.getValue()).collect(Collectors.toList()));
+
+
+        exportExcelRowDataConverter.setFormatter(5, new Formatter<ExampleDTO.Sex>() {
+            @Override
+            public ExampleDTO.Sex parse(String text, Locale locale) throws ParseException {
+                return null;
+            }
+
+            @Override
+            public String print(ExampleDTO.Sex object, Locale locale) {
+                if (ExampleDTO.Sex.MAN.equals(object)) {
+                    return "男";
+                } else if (ExampleDTO.Sex.WOMAN.equals(object)) {
+                    return "女";
+                }
+
+                return "保密";
+            }
+        });
 
         DefaultExportExcelFileProcessingTask defaultExportExcelFileProcessingTask = new DefaultExportExcelFileProcessingTask(
                 "测试任务",
@@ -99,22 +119,21 @@ public class DefaultExportExcelFileProcessingTaskTest {
 
                     return exampleDTOS;
                 },
-                new DefaultExportExcelRowDataConverter(cells.stream().map(exportExcelCell -> exportExcelCell.getValue()).collect(Collectors.toList()))
+                exportExcelRowDataConverter,
+                new FileProcessingTaskAware() {
+                    @Override
+                    public void preProcess(FileProcessingTask fileProcessingTask) {
+                        log.info("开始处理");
+                    }
 
-                , new FileProcessingTaskAware() {
-            @Override
-            public void preProcess(FileProcessingTask fileProcessingTask) {
-                log.info("开始处理");
-            }
-
-            @Override
-            public void postProcess(FileProcessingTask fileProcessingTask, FileProcessingTaskManager fileProcessingTaskManager) {
-                log.info("处理完成");
-            }
-        }, fileProcessingTaskManager);
+                    @Override
+                    public void postProcess(FileProcessingTask fileProcessingTask, FileProcessingTaskManager fileProcessingTaskManager) {
+                        log.info("处理完成");
+                    }
+                }, fileProcessingTaskManager);
 
         defaultExportExcelFileProcessingTask.run();
-        File file = new File(this.getClass().getResource("/").getPath() + "/1.xslx");
+        File file = new File(this.getClass().getResource("/").getPath() + "/1.xlsx");
         if (!file.exists()) {
             file.createNewFile();
         }

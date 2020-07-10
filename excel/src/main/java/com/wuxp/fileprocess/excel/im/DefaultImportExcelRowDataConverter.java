@@ -18,8 +18,8 @@ import java.util.*;
 /**
  * 默认的 row data converter
  *
- * @author wuxp
  * @param <T>
+ * @author wuxp
  */
 @Slf4j
 public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManager implements ImportExcelFileProcessingTask.ImportExcelRowDataConverter<T> {

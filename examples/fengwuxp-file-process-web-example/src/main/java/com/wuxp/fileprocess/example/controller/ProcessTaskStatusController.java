@@ -21,6 +21,8 @@ import java.text.MessageFormat;
 
 /**
  * 处理任务状态
+ *
+ * @author wuxp
  */
 @Controller
 @RequestMapping("task_status")
@@ -67,6 +69,7 @@ public class ProcessTaskStatusController extends ProcessTaskStatusProvider {
      * @throws Exception
      */
     @RequestMapping("export_failure")
+    @Override
     public void exportImportFailureFile(String taskId, String fileName, HttpServletResponse response) throws Exception {
         super.exportImportFailureFile(taskId, fileName, response);
     }
