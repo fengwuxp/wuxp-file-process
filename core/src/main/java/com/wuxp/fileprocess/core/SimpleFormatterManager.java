@@ -7,6 +7,7 @@ import org.springframework.format.datetime.DateFormatter;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author wuxp
@@ -14,11 +15,11 @@ import java.util.Map;
 @Slf4j
 public class SimpleFormatterManager implements FormatterManager {
 
-    protected Map<Integer, Formatter> formatters = new LinkedHashMap<>();
+    protected Map<Integer, Formatter> formatters = new LinkedHashMap<>(12);
 
-    protected Map<String, Formatter> formatterMap = new LinkedHashMap<>();
+    protected Map<String, Formatter> formatterMap = new LinkedHashMap<>(12);
 
-    protected Map<Class<?>, Formatter> classFormatterMap = new LinkedHashMap<>();
+    protected static final Map<Class<?>, Formatter> CLASS_FORMATTER_LINKED_HASH_MAP = new ConcurrentHashMap<>(16);
 
 
     /**
@@ -26,8 +27,8 @@ public class SimpleFormatterManager implements FormatterManager {
      */
     public static final DateFormatter DATE_FORMATTER = new DateFormatter("yyyy年MM月dd日HH时mm分ss秒");
 
-    {
-        this.classFormatterMap.put(Date.class, DATE_FORMATTER);
+    static {
+        CLASS_FORMATTER_LINKED_HASH_MAP.put(Date.class, DATE_FORMATTER);
     }
 
 
@@ -52,21 +53,32 @@ public class SimpleFormatterManager implements FormatterManager {
 
     @Override
     public FormatterManager setFormatter(Class<?> clazz, Formatter formatter) {
-        this.classFormatterMap.put(clazz, formatter);
+        CLASS_FORMATTER_LINKED_HASH_MAP.put(clazz, formatter);
         return this;
+    }
+
+
+    /**
+     * 提供给一个静态方法支持全局设置
+     *
+     * @param clazz
+     * @param formatter
+     */
+    public static void addFormatterByType(Class<?> clazz, Formatter formatter) {
+        CLASS_FORMATTER_LINKED_HASH_MAP.put(clazz, formatter);
     }
 
     /**
      * 获取 formatter
+     * 优先使用 index，其次是字段名称，最后按照类型匹配
      *
-     * @param clazz
-     * @param name
-     * @param index
+     * @param clazz 类类型
+     * @param name  字段名称
+     * @param index 索引
      * @return
      */
     protected Formatter getFormatter(Class<?> clazz, String name, Integer index) {
-
-        Formatter formatter = this.classFormatterMap.get(clazz);
+        Formatter formatter = this.formatters.get(index);
         if (formatter != null) {
             return formatter;
         }
@@ -74,7 +86,7 @@ public class SimpleFormatterManager implements FormatterManager {
         if (formatter != null) {
             return formatter;
         }
-        return this.formatters.get(index);
+        return CLASS_FORMATTER_LINKED_HASH_MAP.get(clazz);
     }
 
     ;

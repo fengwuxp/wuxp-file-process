@@ -5,10 +5,14 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
+import com.wuxp.fileprocess.core.FormatterManager;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
+import com.wuxp.fileprocess.excel.formatter.MapFormatter;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.Formatter;
+import org.springframework.format.number.NumberStyleFormatter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * default export excel processing task
+ *
  * @author wuxp
  */
 @Slf4j
@@ -80,6 +85,7 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
         this.exportExcelRowDataConverter = exportExcelRowDataConverter;
         this.excelCells = excelCells;
         this.fileProcessingTaskAware = fileProcessingTaskAware;
+        initFormatter(excelCells, exportExcelRowDataConverter);
     }
 
 
@@ -197,6 +203,31 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
     protected void writeToCache(List<List<String>> data, Sheet sheet) {
         cacheResult.add(data);
         cacheSheets.add(sheet);
+    }
+
+
+    /**
+     * 初始化formatter
+     *
+     * @param excelCells
+     * @param exportExcelRowDataConverter
+     */
+    private void initFormatter(List<ExportExcelCell> excelCells, ExportExcelRowDataConverter exportExcelRowDataConverter) {
+        if (exportExcelRowDataConverter instanceof FormatterManager) {
+            FormatterManager formatterManager = (FormatterManager) exportExcelRowDataConverter;
+            for (int i = 0; i < excelCells.size(); i++) {
+                ExportExcelCell exportExcelCell = excelCells.get(i);
+                if (exportExcelCell.getFormatter() != null) {
+                    formatterManager.setFormatter(i, exportExcelCell.getFormatter());
+                }
+                if (exportExcelCell.getMapFormatterSource() != null) {
+                    formatterManager.setFormatter(i, new MapFormatter(exportExcelCell.getMapFormatterSource()));
+                }
+                if (exportExcelCell.getNumStylePattern() != null) {
+                    formatterManager.setFormatter(i, new NumberStyleFormatter(exportExcelCell.getNumStylePattern()));
+                }
+            }
+        }
     }
 
 }

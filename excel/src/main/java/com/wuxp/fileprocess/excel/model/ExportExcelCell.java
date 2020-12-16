@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * 导出 excel 每一个cell的描述
+ *
+ * @author wuxp
  */
 @Data
 @AllArgsConstructor
@@ -32,14 +34,19 @@ public class ExportExcelCell {
 
 
     /**
-     * 格式化表正则达式
+     * 格式化数值的达式，仅在当前列对应的数据类型为数值类型是使用
+     *
+     * @see org.springframework.format.number.NumberStyleFormatter
      */
-    private String formatterPattern;
+    private String numStylePattern;
 
     /**
      * map装换数据源，在该对象不为空时，将自动启用map转换器
+     *
+     * @key 属性名称
+     * @value 需要转换的值
      */
-    private Map<String/*属性名称*/, Object> mapFormatterSource;
+    private Map<String, String> mapFormatterSource;
 
     /**
      * 转换器

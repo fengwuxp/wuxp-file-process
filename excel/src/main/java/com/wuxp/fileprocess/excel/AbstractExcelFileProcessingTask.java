@@ -23,6 +23,10 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
 
     protected final String processIdentifies;
 
+    protected FileProcessingTaskAware fileProcessingTaskAware;
+
+    protected FileProcessingTaskManager fileProcessingTaskManager;
+
     protected volatile ProcessStatus processStatus = ProcessStatus.WAIT;
 
     protected volatile Date processBeginTime;
@@ -41,10 +45,6 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
 
     protected volatile int currentSheetTotal = -1;
 
-    protected FileProcessingTaskAware fileProcessingTaskAware;
-
-
-    protected FileProcessingTaskManager fileProcessingTaskManager;
 
     /**
      * 每列的样式设置

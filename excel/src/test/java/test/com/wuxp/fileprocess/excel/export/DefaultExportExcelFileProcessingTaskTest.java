@@ -91,7 +91,6 @@ public class DefaultExportExcelFileProcessingTaskTest {
                 } else if (ExampleDTO.Sex.WOMAN.equals(object)) {
                     return "女";
                 }
-
                 return "保密";
             }
         });
