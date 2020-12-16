@@ -41,7 +41,6 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
         int size = row.size();
         Map<String, Object> resultData = new HashMap<String, Object>(size);
 
-
         filedNameMapIndex.forEach((index, val) -> {
             //属性名称
             String filedName = filedNameMapIndex.get(index);
@@ -49,7 +48,9 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
                 throw new RuntimeException("未获取到file name,在第" + index + "列数据中");
             }
             if (index > size - 1) {
-                log.warn("数据列数：{},index={}", size, index);
+                if (log.isDebugEnabled()) {
+                    log.debug("数据列数：{},index={}", size, index);
+                }
                 resultData.put(filedName, null);
                 return;
             }
@@ -64,14 +65,18 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
                     Object result = ((ExportCellDataFormatter) formatter).parse(cellData, row);
                     resultData.put(filedName, result);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    if (log.isInfoEnabled()) {
+                        log.info("parse value error, filedName={},message={}", filedName, e.getMessage(), e);
+                    }
                 }
             } else {
                 try {
                     Object result = formatter.parse(cellData, Locale.CHINA);
                     resultData.put(filedName, result);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    if (log.isInfoEnabled()) {
+                        log.info("parse value error, filedName={},message={}", filedName, e.getMessage(), e);
+                    }
                 }
             }
         });
@@ -80,7 +85,9 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
         try {
             target = tClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("创建evt失败", e);
+            if (log.isInfoEnabled()) {
+                log.info("反射实例化导入对象失败，message={}", e.getMessage(), e);
+            }
         }
 
         //使用spring 的 dataBinder

@@ -10,6 +10,7 @@ import java.util.Locale;
 /**
  * excel cell data formatter
  *
+ * @author wuxp
  * @param <T> parse result type
  * @param <E> row data item type
  */
@@ -42,6 +43,4 @@ public interface ExportCellDataFormatter<T, E> extends Formatter<T> {
     default T parse(String cellValue, E rowData) throws ParseException {
         return null;
     }
-
-    ;
 }

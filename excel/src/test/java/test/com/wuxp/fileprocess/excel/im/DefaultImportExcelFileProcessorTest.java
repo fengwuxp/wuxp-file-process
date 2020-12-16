@@ -8,9 +8,9 @@ import com.wuxp.fileprocess.excel.im.DefaultImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.im.DefaultImportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.model.ExcelRowDataHandleResult;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 

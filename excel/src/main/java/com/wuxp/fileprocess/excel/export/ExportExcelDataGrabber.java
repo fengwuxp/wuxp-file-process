@@ -29,5 +29,15 @@ public interface ExportExcelDataGrabber<T> {
         return -1L;
     }
 
+    /**
+     * 断言是否需要拒绝本次任务
+     *
+     * @param total 查询总数
+     * @throws RuntimeException 如果拒绝则抛出异常
+     */
+    default void assertReject(long total) throws RuntimeException {
+
+    }
+
 
 }

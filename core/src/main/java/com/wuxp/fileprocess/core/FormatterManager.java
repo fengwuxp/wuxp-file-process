@@ -4,6 +4,8 @@ import org.springframework.format.Formatter;
 
 /**
  * formatter manager
+ *
+ * @author wuxp
  */
 public interface FormatterManager {
 
@@ -26,7 +28,7 @@ public interface FormatterManager {
     /**
      * 设置formatter
      *
-     * @param index
+     * @param index   按照java bean的字段名称
      * @param formatter
      */
     FormatterManager setFormatter(String index, Formatter formatter);
@@ -34,7 +36,7 @@ public interface FormatterManager {
     /**
      * 设置formatter
      *
-     * @param clazz
+     * @param clazz     按照类型
      * @param formatter
      * @return
      */

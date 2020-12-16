@@ -8,7 +8,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.format.Formatter;
-import org.springframework.format.datetime.DateFormatter;
 
 import java.util.*;
 
@@ -72,13 +71,20 @@ public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManage
             try {
                 value = expression.getValue(data);
             } catch (Exception e) {
-                log.warn("name-> " + valueExpression + "的值为找到，异常：" + e.getMessage());
+                if (log.isInfoEnabled()) {
+                    log.info("通过spel表达式取值失败，value expression={},message={}", expression.getExpressionString(), e.getMessage(), e);
+                }
             }
-
             if (value == null) {
                 result.add(null);
             } else {
-                result.add(this.formatterValue(value, i, data));
+                try {
+                    result.add(this.formatterValue(value, i, data));
+                } catch (Exception e) {
+                    if (log.isInfoEnabled()) {
+                        log.info("formatter value error, value={}，index={},row data={},message={}", value, i, data, e.getMessage(), e);
+                    }
+                }
             }
         }
 

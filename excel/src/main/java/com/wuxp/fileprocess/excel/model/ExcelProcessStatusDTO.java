@@ -3,7 +3,6 @@ package com.wuxp.fileprocess.excel.model;
 import com.wuxp.fileprocess.core.enums.ProcessStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import java.util.Date;
 

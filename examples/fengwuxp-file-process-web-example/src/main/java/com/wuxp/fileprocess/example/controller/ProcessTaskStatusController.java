@@ -1,23 +1,16 @@
 package com.wuxp.fileprocess.example.controller;
 
 
-import com.wuxp.fileprocess.core.FileProcessingTask;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.example.ProcessTaskStatusProvider;
-import com.wuxp.fileprocess.excel.ExcelFileProcessingTask;
-import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
-import com.wuxp.fileprocess.excel.ImportExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.model.ExcelProcessStatusDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 
 /**
  * 处理任务状态

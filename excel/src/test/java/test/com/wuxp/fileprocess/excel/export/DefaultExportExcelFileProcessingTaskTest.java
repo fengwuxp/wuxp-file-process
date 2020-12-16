@@ -8,9 +8,9 @@ import com.wuxp.fileprocess.excel.export.DefaultExportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.format.Formatter;
 import test.com.wuxp.fileprocess.excel.im.ExampleDTO;
 
@@ -95,6 +95,7 @@ public class DefaultExportExcelFileProcessingTaskTest {
                 return "保密";
             }
         });
+
 
         DefaultExportExcelFileProcessingTask defaultExportExcelFileProcessingTask = new DefaultExportExcelFileProcessingTask(
                 "测试任务",

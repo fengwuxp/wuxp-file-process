@@ -1,9 +1,18 @@
 package com.wuxp.fileprocess.core;
 
+import java.util.concurrent.Executor;
+
 /**
  * 文件处理任务管理器
+ *
+ * @author wuxp
  */
 public interface FileProcessingTaskManager {
+
+    /**
+     * 文件处理的 {@link Executor} bean name
+     */
+    String FILE_PROCESS_TASK_EXECUTOR_BEAN_NAME = "file_processing_task_executor";
 
 
     /**

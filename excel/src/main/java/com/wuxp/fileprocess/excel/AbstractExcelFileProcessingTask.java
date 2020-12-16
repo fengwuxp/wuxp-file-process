@@ -152,10 +152,8 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
             } else {
                 this.processStatus = ProcessStatus.PART_SUCCESS;
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("处理excel异常", e);
+            log.warn("处理excel异常,message={}", e.getMessage(), e);
             this.processStatus = ProcessStatus.ERROR;
         }
 

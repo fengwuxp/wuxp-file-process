@@ -12,7 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +39,7 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
     /**
      * 一次抓取数据的大小
      */
-    protected int fetchSize = 2000;
+    protected int fetchSize = 500;
 
     /**
      * 数据抓取者
@@ -71,7 +74,7 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
                                                 ExportExcelRowDataConverter exportExcelRowDataConverter,
                                                 FileProcessingTaskAware fileProcessingTaskAware,
                                                 FileProcessingTaskManager fileProcessingTaskManager) {
-        super(taskName, fileProcessingTaskAware,fileProcessingTaskManager);
+        super(taskName, fileProcessingTaskAware, fileProcessingTaskManager);
         this.exportExcelDataGrabber = exportExcelDataGrabber;
         this.exportExcelRowDataConverter = exportExcelRowDataConverter;
         this.excelCells = excelCells;
@@ -130,8 +133,10 @@ public class DefaultExportExcelFileProcessingTask extends AbstractExcelFileProce
     protected void process() throws Exception {
 
         int fetchSize = this.fetchSize;
-        //抓取数据
+        // 抓取数据
         int totalNumber = (int) exportExcelDataGrabber.getTotalNumber();
+        // 如果支持
+        exportExcelDataGrabber.assertReject(totalNumber);
         this.processTotal = totalNumber;
         int maxPage = Integer.MAX_VALUE, maxSheetNum = 1;
         int sheetMaxRows = this.sheetMaxRows;
