@@ -3,6 +3,8 @@ package com.wuxp.fileprocess.core.enums;
 
 /**
  * 处理状态
+ *
+ * @author wuxp
  */
 public enum ProcessStatus {
 
@@ -16,7 +18,6 @@ public enum ProcessStatus {
     ERROR("处理失败"),
 
     PART_SUCCESS("部分成功"),
-
 
     INTERRUPT("任务被中断");
 

@@ -117,21 +117,16 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         }
 
         final ExcelWriter writer = EasyExcelFactory.getWriter(outputStream);
-
-        int size = this.sheets.size();
-        for (int i = 0; i < size; i++) {
-            Sheet sheet = this.sheets.get(i);
+        for (Sheet sheet : this.sheets) {
             List<List<String>> head = sheet.getHead();
             if (head == null) {
                 continue;
             }
-            head.add(Arrays.asList("失败原因"));
-//            head.add(Arrays.asList("原始行号"));
+            head.add(Collections.singletonList("失败原因"));
             sheet.setHead(head);
             writer.write0(this.failureRows.stream().map(Arrays::asList).collect(Collectors.toList()), sheet);
         }
         writer.finish();
-
         try {
             outputStream.close();
         } catch (IOException e) {
@@ -152,7 +147,6 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
             public void invoke(List<String> row, AnalysisContext analysisContext) {
                 Sheet currentSheet = analysisContext.getCurrentSheet();
                 //跳过表头
-//                int headLineMun = currentSheet.getHeadLineMun();
                 int currentRowNum = analysisContext.getCurrentRowNum();
                 if (currentRowNum <= headLineMun) {
                     log.info("跳过表头");
@@ -200,8 +194,6 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
             @Override
             public void doAfterAllAnalysed(AnalysisContext analysisContext) {
                 //处理完成
-
-
             }
         });
         List<Sheet> sheets = excelReader.getSheets();
@@ -220,33 +212,16 @@ public class DefaultImportExcelFileProcessingTask extends AbstractExcelFileProce
         return headTitleLine;
     }
 
-
-    /**
-     * 创建一个新的sheet 用于导出失败的xlsx
-     *
-     * @param index
-     * @param titles
-     * @return
-     */
-//    protected Sheet createNewSheet(int index, List<List<String>> titles) {
-//
-//        Sheet sheet = new Sheet(index + 1, this.headTitleLine);
-//        sheet.setHead(titles);
-//        sheet.setAutoWidth(true);
-//        return sheet;
-//    }
-
     /**
      * 添加错误的行记录
      *
-     * @param row
+     * @param rows
      * @param cause              失败原因
      * @param originalLineNumber 原始的行号
      */
-    protected void addFailureRow(List<String> row, String cause, int originalLineNumber) {
-        List<String> arrayList = new ArrayList<>(row);
+    protected void addFailureRow(List<String> rows, String cause, int originalLineNumber) {
+        List<String> arrayList = new ArrayList<>(rows);
         arrayList.add(cause);
-//        arrayList.add(originalLineNumber + 1 + "");
         this.failureRows.add(arrayList.toArray(new String[0]));
         increaseFailureTotal();
     }

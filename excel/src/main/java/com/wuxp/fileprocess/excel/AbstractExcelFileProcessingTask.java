@@ -13,31 +13,33 @@ import java.util.UUID;
 
 /**
  * 抽象的 excel file processing task
+ *
+ * @author wuxp
  */
 @Slf4j
 public abstract class AbstractExcelFileProcessingTask implements ExcelFileProcessingTask {
 
-    protected String name;
+    protected final String name;
 
-    protected String processIdentifies;
+    protected final String processIdentifies;
 
-    protected ProcessStatus processStatus = ProcessStatus.WAIT;
+    protected volatile ProcessStatus processStatus = ProcessStatus.WAIT;
 
-    protected Date processBeginTime;
+    protected volatile Date processBeginTime;
 
-    protected Date processEndTime;
+    protected volatile Date processEndTime;
 
-    protected int processTotal = 0;
+    protected volatile int processTotal = 0;
 
-    protected int successTotal = 0;
+    protected volatile int successTotal = 0;
 
-    protected int failureTotal = 0;
+    protected volatile int failureTotal = 0;
 
-    protected int sheetTotal = 0;
+    protected volatile int sheetTotal = 0;
 
-    protected int currentSheetIndex = -1;
+    protected volatile int currentSheetIndex = -1;
 
-    protected int currentSheetTotal = -1;
+    protected volatile int currentSheetTotal = -1;
 
     protected FileProcessingTaskAware fileProcessingTaskAware;
 
@@ -134,14 +136,17 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
 
     @Override
     public void run() {
-
+        Date beginTime = new Date();
+        this.processBeginTime = beginTime;
+        if (log.isInfoEnabled()) {
+            log.info("开始处理name={}的任务", this.name);
+        }
         FileProcessingTaskAware fileProcessingTaskAware = this.fileProcessingTaskAware;
         boolean needHandleAware = fileProcessingTaskAware != null;
         if (needHandleAware) {
             fileProcessingTaskAware.preProcess(this);
         }
 
-        this.processBeginTime = new Date();
         this.processStatus = ProcessStatus.PROCESSING;
         try {
             this.process();
@@ -153,15 +158,20 @@ public abstract class AbstractExcelFileProcessingTask implements ExcelFileProces
                 this.processStatus = ProcessStatus.PART_SUCCESS;
             }
         } catch (Exception e) {
-            log.warn("处理excel异常,message={}", e.getMessage(), e);
+            if (log.isInfoEnabled()) {
+                log.info("处理excel异常,message={}", e.getMessage(), e);
+            }
             this.processStatus = ProcessStatus.ERROR;
         }
 
         if (needHandleAware) {
             fileProcessingTaskAware.postProcess(this, fileProcessingTaskManager);
         }
-        this.processEndTime = new Date();
-        log.info("任务处理结束 {}", this.name);
+        Date endTime = new Date();
+        this.processEndTime = endTime;
+        if (log.isInfoEnabled()) {
+            log.info("处理name={}的导出结束，耗时={}", this.name, endTime.getTime() - beginTime.getTime());
+        }
     }
 
 
