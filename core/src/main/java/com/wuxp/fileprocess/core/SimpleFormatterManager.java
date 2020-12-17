@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * @author wuxp
@@ -19,7 +20,7 @@ public class SimpleFormatterManager implements FormatterManager {
 
     protected Map<String, Formatter> formatterMap = new LinkedHashMap<>(12);
 
-    protected static final Map<Class<?>, Formatter> CLASS_FORMATTER_LINKED_HASH_MAP = new ConcurrentHashMap<>(16);
+    protected static final Map<Class<?>, Object> CLASS_FORMATTER_LINKED_HASH_MAP = new ConcurrentHashMap<>(16);
 
 
     /**
@@ -62,10 +63,20 @@ public class SimpleFormatterManager implements FormatterManager {
      * 提供给一个静态方法支持全局设置
      *
      * @param clazz
-     * @param formatter
+     * @param formatter formatter 需要是线程安全的
      */
     public static void addFormatterByType(Class<?> clazz, Formatter formatter) {
         CLASS_FORMATTER_LINKED_HASH_MAP.put(clazz, formatter);
+    }
+
+    /**
+     * 提供给一个静态方法支持全局设置
+     *
+     * @param clazz
+     * @param supplier 保证线程安全或者每次返回一个新对象
+     */
+    public static void addFormatterByType(Class<?> clazz, Supplier<Formatter> supplier) {
+        CLASS_FORMATTER_LINKED_HASH_MAP.put(clazz, supplier);
     }
 
     /**
@@ -86,7 +97,11 @@ public class SimpleFormatterManager implements FormatterManager {
         if (formatter != null) {
             return formatter;
         }
-        return CLASS_FORMATTER_LINKED_HASH_MAP.get(clazz);
+        Object supplier = CLASS_FORMATTER_LINKED_HASH_MAP.get(clazz);
+        if (supplier instanceof Supplier) {
+            return ((Supplier<Formatter>) supplier).get();
+        }
+        return (Formatter) supplier;
     }
 
     ;
