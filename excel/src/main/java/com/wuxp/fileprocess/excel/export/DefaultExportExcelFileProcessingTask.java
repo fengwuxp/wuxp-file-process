@@ -6,12 +6,11 @@ import com.alibaba.excel.metadata.Sheet;
 import com.wuxp.fileprocess.core.FileProcessingTaskAware;
 import com.wuxp.fileprocess.core.FileProcessingTaskManager;
 import com.wuxp.fileprocess.core.FormatterManager;
+import com.wuxp.fileprocess.core.formatter.MapFormatter;
 import com.wuxp.fileprocess.excel.AbstractExcelFileProcessingTask;
 import com.wuxp.fileprocess.excel.ExportExcelFileProcessingTask;
-import com.wuxp.fileprocess.excel.formatter.MapFormatter;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.Formatter;
 import org.springframework.format.number.NumberStyleFormatter;
 
 import java.io.IOException;

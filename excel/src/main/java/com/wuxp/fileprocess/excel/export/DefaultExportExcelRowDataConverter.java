@@ -22,24 +22,24 @@ import java.util.*;
 public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManager implements ExportExcelFileProcessingTask.ExportExcelRowDataConverter<T> {
 
 
-    private Map<Integer, String> filedNameMapIndex = new LinkedHashMap<>();
+    private final Map<Integer, String> filedNameIndexMap = new LinkedHashMap<>();
 
     /**
      * 表达式解析器
      */
-    private ExpressionParser expressionParser = new SpelExpressionParser();
+    private final ExpressionParser expressionParser = new SpelExpressionParser();
 
     /**
      * 取值表达式
      */
-    private List<String> valueExpressions;
+    private final List<String> valueExpressions;
 
     /**
      * 用来缓存的表达式的临时结果
      *
      * @key 表达式
      */
-    private Map<String, Expression> expressionMap = new HashMap<>();
+    private final Map<String, Expression> expressionMap = new HashMap<>();
 
     public DefaultExportExcelRowDataConverter(List<String> valueExpressions) {
         this.valueExpressions = valueExpressions;
@@ -102,7 +102,7 @@ public class DefaultExportExcelRowDataConverter<T> extends SimpleFormatterManage
      */
     protected String formatterValue(Object val, int cellIndex, T data) {
 
-        String filedName = filedNameMapIndex.get(cellIndex);
+        String filedName = filedNameIndexMap.get(cellIndex);
 
         Formatter formatter = getFormatter(val.getClass(), filedName, cellIndex);
         if (formatter == null) {

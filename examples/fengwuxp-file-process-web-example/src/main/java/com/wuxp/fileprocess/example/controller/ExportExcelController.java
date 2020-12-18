@@ -1,7 +1,7 @@
 package com.wuxp.fileprocess.example.controller;
 
 import com.wuxp.fileprocess.example.model.ExampleDTO;
-import com.wuxp.fileprocess.excel.ExportExcelFIleTaskBuilder;
+import com.wuxp.fileprocess.excel.ExportExcelFileTaskBuilder;
 import com.wuxp.fileprocess.excel.export.DefaultExportExcelRowDataConverter;
 import com.wuxp.fileprocess.excel.export.ExportExcelDataGrabber;
 import com.wuxp.fileprocess.excel.model.ExportExcelCell;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ExportExcelController {
 
     @Autowired
-    private ExportExcelFIleTaskBuilder exportExcelFIleTaskBuilder;
+    private ExportExcelFileTaskBuilder exportExcelFIleTaskBuilder;
 
 
     /**

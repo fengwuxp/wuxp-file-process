@@ -37,9 +37,7 @@ public class SimpleFileProcessingTaskManager implements FileProcessingTaskManage
             return fileProcessingTask.getProcessIdentifies();
         }
         executor.execute(processingTask);
-
         FILE_PROCESSING_TASK_MAP.put(processIdentifies, processingTask);
-
         return processIdentifies;
     }
 

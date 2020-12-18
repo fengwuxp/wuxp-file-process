@@ -15,11 +15,12 @@ import java.util.List;
 
 /**
  * 使用 nashorn Js引擎来处理数据
+ * @author wuxp
  */
 @Slf4j
 public class NashornExportExcelRowDataConverter implements ExportExcelFileProcessingTask.ExportExcelRowDataConverter {
 
-    private NashornSandbox nashornSandbox = NashornSandboxes.create();
+    private final NashornSandbox nashornSandbox = NashornSandboxes.create();
 
     /**
      * js 文件路径，本地或远程

@@ -13,20 +13,23 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author wuxp
+ */
 @Slf4j
 @Component
-public class ExportExcelFIleTaskBuilder {
+public class ExportExcelFileTaskBuilder {
 
     @Autowired
     private FileProcessingTaskManager fileProcessingTaskManager;
 
-    public InnerExportExcelFIleTaskBuilder newBuilder() {
+    public InnerExportExcelFileTaskBuilder newBuilder() {
 
-        return new InnerExportExcelFIleTaskBuilder();
+        return new InnerExportExcelFileTaskBuilder();
     }
 
     @Getter
-    public class InnerExportExcelFIleTaskBuilder implements ExcelProcessTaskBuilder {
+    public class InnerExportExcelFileTaskBuilder implements ExcelProcessTaskBuilder {
 
         /**
          * 任务名称
@@ -54,30 +57,30 @@ public class ExportExcelFIleTaskBuilder {
         protected FileProcessingTaskAware fileProcessingTaskAware;
 
 
-        private InnerExportExcelFIleTaskBuilder() {
+        private InnerExportExcelFileTaskBuilder() {
         }
 
-        public InnerExportExcelFIleTaskBuilder excelCells(List<ExportExcelCell> excelCells) {
+        public InnerExportExcelFileTaskBuilder excelCells(List<ExportExcelCell> excelCells) {
             this.excelCells = excelCells;
             return this;
         }
 
-        public InnerExportExcelFIleTaskBuilder taskName(String taskName) {
+        public InnerExportExcelFileTaskBuilder taskName(String taskName) {
             this.taskName = taskName;
             return this;
         }
 
-        public InnerExportExcelFIleTaskBuilder exportExcelDataGrabber(ExportExcelDataGrabber exportExcelDataGrabber) {
+        public InnerExportExcelFileTaskBuilder exportExcelDataGrabber(ExportExcelDataGrabber exportExcelDataGrabber) {
             this.exportExcelDataGrabber = exportExcelDataGrabber;
             return this;
         }
 
-        public InnerExportExcelFIleTaskBuilder exportExcelRowDataConverter(ExportExcelFileProcessingTask.ExportExcelRowDataConverter exportExcelRowDataConverter) {
+        public InnerExportExcelFileTaskBuilder exportExcelRowDataConverter(ExportExcelFileProcessingTask.ExportExcelRowDataConverter exportExcelRowDataConverter) {
             this.exportExcelRowDataConverter = exportExcelRowDataConverter;
             return this;
         }
 
-        public InnerExportExcelFIleTaskBuilder fileProcessingTaskAware(FileProcessingTaskAware fileProcessingTaskAware) {
+        public InnerExportExcelFileTaskBuilder fileProcessingTaskAware(FileProcessingTaskAware fileProcessingTaskAware) {
             this.fileProcessingTaskAware = fileProcessingTaskAware;
             return this;
         }
@@ -102,7 +105,7 @@ public class ExportExcelFIleTaskBuilder {
         @Override
         public String start() {
 
-            return this.start((ExcelProcessTaskFactory<InnerExportExcelFIleTaskBuilder>) builder ->
+            return this.start((ExcelProcessTaskFactory<InnerExportExcelFileTaskBuilder>) builder ->
                     new DefaultExportExcelFileProcessingTask(
                             builder.getTaskName(),
                             builder.getExcelCells(),

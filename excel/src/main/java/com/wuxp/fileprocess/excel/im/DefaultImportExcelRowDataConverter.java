@@ -24,9 +24,9 @@ import java.util.*;
 @Slf4j
 public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManager implements ImportExcelFileProcessingTask.ImportExcelRowDataConverter<T> {
 
-    private Map<Integer, String> filedNameMapIndex = new LinkedHashMap<>();
+    private final Map<Integer, String> filedNameIndexMap = new LinkedHashMap<>();
 
-    private Class<T> tClass;
+    private final Class<T> tClass;
 
     public DefaultImportExcelRowDataConverter(Class<T> tClass) {
         this.tClass = tClass;
@@ -41,9 +41,9 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
         int size = row.size();
         Map<String, Object> resultData = new HashMap<String, Object>(size);
 
-        filedNameMapIndex.forEach((index, val) -> {
+        filedNameIndexMap.forEach((index, val) -> {
             //属性名称
-            String filedName = filedNameMapIndex.get(index);
+            String filedName = filedNameIndexMap.get(index);
             if (!StringUtils.hasText(filedName)) {
                 throw new RuntimeException("未获取到file name,在第" + index + "列数据中");
             }
@@ -110,7 +110,7 @@ public class DefaultImportExcelRowDataConverter<T> extends SimpleFormatterManage
      * @return
      */
     public DefaultImportExcelRowDataConverter<T> putFiledName(int cellIndex, String filedName) {
-        this.filedNameMapIndex.put(cellIndex, filedName);
+        this.filedNameIndexMap.put(cellIndex, filedName);
         return this;
     }
 }

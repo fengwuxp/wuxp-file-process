@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * excel状态处理 dto
+ * @author wuxp
  */
 @Data
 @Accessors(chain = true)

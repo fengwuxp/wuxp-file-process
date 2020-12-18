@@ -24,7 +24,7 @@ public class FenToYanFormatter implements Formatter<Number> {
         if (!StringUtils.hasText(text)) {
             return null;
         }
-        return BigDecimal.valueOf(Long.valueOf(text))
+        return BigDecimal.valueOf(Long.parseLong(text))
                 .divide(new BigDecimal(100), 2)
                 .setScale(2, BigDecimal.ROUND_UP);
     }

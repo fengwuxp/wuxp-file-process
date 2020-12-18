@@ -18,7 +18,7 @@ public interface FileProcessingTaskManager {
     /**
      * 加入任务
      *
-     * @param processingTask
+     * @param processingTask 处理任务
      * @return 返回任务唯一标识
      */
     String join(FileProcessingTask processingTask);
@@ -27,7 +27,7 @@ public interface FileProcessingTaskManager {
     /**
      * 获取任务
      *
-     * @param identifies
+     * @param identifies 任务标识
      * @return
      */
     FileProcessingTask get(String identifies);

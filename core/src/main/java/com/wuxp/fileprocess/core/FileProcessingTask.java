@@ -8,6 +8,8 @@ import java.util.Date;
 /**
  * 文件处理任务的接口
  * 统一使用异步处理
+ *
+ * @author wuxp
  */
 public interface FileProcessingTask extends Runnable {
 
