@@ -22,7 +22,7 @@
         <module>excel</module>
         <module>boot-starter</module>
         <module>examples</module>
-        <module>nashorn</module>
+        <module>j2v8</module>
     </modules>
 
 

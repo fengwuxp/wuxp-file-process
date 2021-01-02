@@ -1,4 +1,4 @@
-package com.wuxp.nashorn;
+package com.wuxp.j2v8;
 
 /**
  * mark a class as js invocable
